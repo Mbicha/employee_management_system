@@ -2,3 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
+.sub-header {
+    @apply flex items-center font-bold;
+}
