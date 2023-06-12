@@ -17,6 +17,7 @@ app.use(cookie());
 
 //routes
 app.use('/api/user', auth);
+app.use('/api/users', auth);
 
 const PORT = process.env.PORT || 5000;
 

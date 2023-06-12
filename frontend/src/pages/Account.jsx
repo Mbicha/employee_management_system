@@ -14,16 +14,22 @@ const Account = () => {
         }));
     }
 
+    const getUsers = async () => {
+        try {
+            const response = await http.get('/users')
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getUsers();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        try {
-            const options = {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            };
-            await http.post('/user', formData, options);
+        try {            
+            await http.post('/user', formData);
             console.log("Saved");
             event.target.reset();
         } catch (error) {
