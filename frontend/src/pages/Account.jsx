@@ -29,7 +29,7 @@ const Account = () => {
         event.preventDefault();
 
         try {            
-            await http.post('/user', formData);
+            await http.post('/user/register', formData);
             console.log("Saved");
             event.target.reset();
         } catch (error) {
@@ -54,7 +54,7 @@ const Account = () => {
                     <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="password" placeholder="Password" name='password' onChange={handleFormChange}/>
 
                     <button className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4" type="button" onClick={handleSubmit}>Register</button>
-                    <span>Already have an account? <Link to='/'>Login</Link></span>
+                    <span>Already have an account? <Link to='/login'>Login</Link></span>
                 </form>
             </div>
         </div>

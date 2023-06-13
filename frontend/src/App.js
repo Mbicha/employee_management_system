@@ -6,11 +6,14 @@ import {
   Outlet
 } from "react-router-dom";
 
+import React, { useState } from 'react';
+
 // Import Pages
 import Home from "./pages/Home";
 import Account from "./pages/Account";
 import Deparments from "./pages/Deparments";
 import ContactUs from "./pages/ContactUs";
+import Login from './pages/Login';
 import Employees from "./pages/Employees";
 import EmployeeData from './pages/EmployeeData';
 
@@ -51,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/deptdata",
         element: <DepartmentData/>
+      },
+      {
+        path: "/login",
+        element: <Login/>
       }
     ]
   }
