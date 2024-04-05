@@ -8,25 +8,22 @@
     "start": "npm server.js",
     "server": "nodemon server.js",
     "client": "npm run start --prefix ../frontend",
-    "dev": "npm run server"
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Charles Mbithi",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.4",
     "bcrypt": "^5.1.0",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "concurrently": "^8.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "cvs": "^0.6.8",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.2.0",
-    "passport": "^0.7.0",
-    "validator": "^13.11.0"
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.0"
   }
 }

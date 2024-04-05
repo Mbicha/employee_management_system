@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' });
+const PASSWORD = process.env.DATABASE_PASSWORD;
+console.log(PASSWORD);
 
-const uri = "mongodb://127.0.0.1:27017/employees_db"
+// const LIVE_DB = process.env.DATABASE.replace(
+//   '<PASSWORD>',
+//   process.env.DATABASE_PASSWORD
+// )
+const LIVE_DB = `mongodb+srv://mbithi:Mbit4243@sems.fhemfuj.mongodb.net/SEMS?retryWrites=true&w=majority&appName=SEMS`
+const uri = "mongodb://127.0.0.1:27017/SEMS"
 
-// Allow Promises
-mongoose.Promise = global.Promise;
-// Connection
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology:true  });
-// Validation
-mongoose.connection
-  .once('open', () => console.log('Connected to the database!'))
-  .on('error', err => console.log('Error with the database!', err));
-  
+mongoose.connect(LIVE_DB).then(() => console.log(`Connected to Database`));

@@ -1,52 +1,65 @@
 const user = require("../models/user");
-const utils = require("../utils");
+const jwt = require('jsonwebtoken');
+// const { use } = require("../routes/route_auth");
+
+const JWT_TOKEN = "Smart-employee-ManaGement-System-JWT_TOKEN"
+const signToken = id => {
+  jwt.sign({id: id}, JWT_TOKEN, {
+  expiresIn: '7d'
+})
+}
 
 exports.register = async(req, res) => {
-
     try {
-        const hashed = utils.hashPassword(req.body.password, 10);
         const newUser = await user.create({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            phone: req.body.phone,
-            password: hashed
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,          
+          email: req.body.email,
+          phone: req.body.phone,
+          password: req.body.password,
+          confirm_password: req.body.confirm_password
         });
-        res.send({ newUser });
+        
+        const jwt_token = signToken(newUser._id);
+
+        res.status(201).json(
+          {
+            status: 'success',
+            jwt_token,
+            data: {
+              user: newUser
+            }
+          }
+        )
     } catch (error) {
+      console.log(error);
         res.status(404).send({ error:error });
     }
 }
 
-exports.login = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-  
-      // Find the user by email
-      const foundUser = await user.findOne({ email });
-  
-      // If the user does not exist, return an error
-      if (!foundUser) {
-        return res.status(401).json({ err: 'Wrong Email' });
-      }
-  
-      // Check if the password is correct
-      const isMatch = utils.decryptPassword(password, foundUser.password);
-  
-      // If the password is incorrect, return an error
-      if (!isMatch) {
-        return res.status(401).json({ err: 'Wrong email or password' });
-      }
-      
-      res.status(200).json({
-        message: "Login Successful",
-        foundUser,
-      })
-  
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ err: 'Server error' });
+exports.signin = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).send({ error: "Provide Email and Password" })
     }
+
+    const existing_user = await user.findOne({email}).select("+password");
+
+    if (!existing_user || !(await existing_user.correctPassword(password, existing_user.password))) {
+      res.status(401).send({ error: "Incorrect Email or Password" })
+    }
+
+
+    let token = "";
+    if (existing_user) {
+      token = signToken(existing_user._id);
+    }
+
+    res.status(200).send({
+      status: 'success',
+      token
+    });
 };
   
 
@@ -54,7 +67,10 @@ exports.login = async (req, res) => {
 exports.getUsers = async(req, res) => {
     try {
         const users = await user.find({});
-        res.send({ users })
+        res.send({ 
+          "num_users": users.length,
+          users 
+        })
     } catch (err) {
         res.status(400).send({err: err});
     }
