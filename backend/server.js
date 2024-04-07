@@ -6,6 +6,7 @@ require('./config/db.config');
 
 const auth = require('./routes/route_auth');
 const department = require('./routes/department')
+const location = require('./routes/location');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cookie());
 app.use('/api/user', auth);
 app.use('/api/users', auth);
 app.use('/api/departments', department);
+app.use('/api/locations', location)
 
 const PORT = process.env.PORT || 5000;
 
