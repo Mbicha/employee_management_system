@@ -8,6 +8,9 @@ const auth = require('./routes/route_auth');
 const department = require('./routes/department')
 const location = require('./routes/location');
 const designation = require('./routes/designation');
+const employee = require("./routes/employee");
+const salary = require("./routes/salary");
+const overtime = require("./routes/overtime");
 
 const app = express();
 
@@ -24,6 +27,10 @@ app.use('/api/users', auth);
 app.use('/api/departments', department);
 app.use('/api/locations', location)
 app.use('/api/designations', designation)
+app.use('/api/employees', employee)
+app.use('/api/salaries', salary)
+app.use('/api/overtimes', overtime)
+
 
 const PORT = process.env.PORT || 5000;
 
