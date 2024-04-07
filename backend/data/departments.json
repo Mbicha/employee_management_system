@@ -1,0 +1,45 @@
+{
+    "departments": [
+      {
+        "name": "Human Resources",
+        "description": "Responsible for managing employee recruitment, hiring, training, benefits, and resolving workplace conflicts."
+      },
+      {
+        "name": "Finance",
+        "description": "Responsible for managing financial transactions, budgets, forecasts, financial reporting, and ensuring compliance with financial regulations."
+      },
+      {
+        "name": "Information Technology (IT)",
+        "description": "Responsible for managing computer systems, networks, software applications, and providing technical support to employees."
+      },
+      {
+        "name": "Marketing",
+        "description": "Responsible for promoting the company's products or services, conducting market research, advertising, and branding."
+      },
+      {
+        "name": "Sales",
+        "description": "Responsible for generating revenue by selling products or services to clients or customers."
+      },
+      {
+        "name": "Customer Service",
+        "description": "Responsible for providing assistance to customers before, during, and after their purchase of a product or service."
+      },
+      {
+        "name": "Operations",
+        "description": "Responsible for overseeing daily business operations, including production, logistics, inventory management, and quality control."
+      },
+      {
+        "name": "Research and Development (R&D)",
+        "description": "Responsible for creating new products or improving existing ones through research, innovation, and development."
+      },
+      {
+        "name": "Legal",
+        "description": "Responsible for providing legal advice, drafting contracts, handling disputes, and ensuring compliance with laws and regulations."
+      },
+      {
+        "name": "Public Relations (PR)",
+        "description": "Responsible for managing the company's public image, media relations, press releases, and crisis communication."
+      }
+    ]
+  }
+  

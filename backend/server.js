@@ -5,6 +5,7 @@ const cookie = require('cookie-parser');
 require('./config/db.config');
 
 const auth = require('./routes/route_auth');
+const department = require('./routes/department')
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookie());
 //routes
 app.use('/api/user', auth);
 app.use('/api/users', auth);
+app.use('/api/departments', department);
 
 const PORT = process.env.PORT || 5000;
 
