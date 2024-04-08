@@ -118,3 +118,76 @@ exports.deleteEmployee = async (req, res) => {
         });
     }
 }
+
+/**
+ * Retrieves the names, email addresses, roles, designations, and departments of all employees.
+ * This function aggregates data from the "Employees", "Users", "Designations", and "Departments" collections
+ * in the MongoDB database and constructs an array of objects containing employee information.
+ * The employee's full name is concatenated from their first name and last name.
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * 
+ * @returns {Object} A JSON object containing the HTTP response with the employee data.
+ * 
+ * @throws {Object} A JSON object containing an error message if an internal server error occurs.
+ */
+exports.getEmployeeBasicInfo = async (req, res) => {
+    try {
+        const employees = await Employee.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "user_id",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $lookup: {
+                    from: "designations",
+                    localField: "job_id",
+                    foreignField: "_id",
+                    as: "designation"
+                }
+            },
+            {
+                $lookup: {
+                    from: "departments",
+                    localField: "designation.dept_id",
+                    foreignField: "_id",
+                    as: "department"
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    full_name:{
+                        $concat: [
+                            {$arrayElemAt: ["$user.first_name", 0] },
+                            " ",
+                            {$arrayElemAt: ["$user.last_name", 0] }
+                        ]
+                    },
+                    email: {$arrayElemAt: ["$user.email", 0] },
+                    role: 1,
+                    designation: { $arrayElemAt: ["$designation.job_title", 0] },
+                    department: { $arrayElemAt: ["$department.name", 0] }
+                }
+            }
+        ]);
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                employees: employees
+            }
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+            error: error.message
+        });
+    }
+}
