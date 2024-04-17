@@ -65,7 +65,7 @@ exports.updateSalary = async (req, res) => {
             { new: true }
         )
 
-        if(!department) {
+        if(!salary) {
             return res.status(404).json({
                 status: 'fail',
                 message: "No salary with such id"
@@ -79,6 +79,7 @@ exports.updateSalary = async (req, res) => {
             }
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'error',
             message: 'Internal server error',
@@ -108,38 +109,6 @@ exports.deleteSalary = async (req, res) => {
         res.status(500).json({
             status: 'error',
             message: 'Internal server error',
-            error: error.message
-        });
-    }
-}
-
-
-/**
- * 
- */
-exports.getEmployeeSalaries = async (req, res) => {
-    try {
-        const empSalaries = await Salary.aggregate([
-            {
-                $lookup: {
-                    from: "employees",
-                    localField: "emp_id",
-                    foreignField: "_id",
-                    as: "employee"
-                }
-            }
-        ]);
-
-        res.status(200).json({
-            status: 'success',
-            data: {
-                empSalaries: empSalaries
-            }
-        })
-    } catch (error) {
-        res.status(500).json({
-            status: 'fail',
-            message: 'internal error',
             error: error.message
         });
     }

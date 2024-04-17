@@ -191,3 +191,106 @@ exports.getEmployeeBasicInfo = async (req, res) => {
         });
     }
 }
+
+/**
+ * Retrieves employee salary details
+ */
+exports.getEmployeeSalaries = async (req, res) => {
+    try {
+        const empSalaries = await Employee.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "user_id",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $lookup: {
+                    from: "salaries",
+                    localField: "_id",
+                    foreignField: "empl_id",
+                    as: "salary"
+                }
+            },
+            {
+                $lookup: {
+                    from: "overtimes",
+                    localField: "_id",
+                    foreignField: "emp_id",
+                    as: "overtime"
+                }
+            },
+            {
+                $addFields: {
+                    total_hours: {
+                        $divide: [
+                            { 
+                                $subtract: [
+                                    {$arrayElemAt: ["$overtime.stop_time", 0]},
+                                    {$arrayElemAt: ["$overtime.start_time", 0]}
+                                ]
+                            },
+                            1000 * 60 * 60 // Convert milliseconds to hours
+                        ]
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    remaining_salary: {
+                        $subtract:  [
+                            { $arrayElemAt: ["$salary.salary", 0] },
+                            { $arrayElemAt: ["$salary.salary_advance", 0] }
+                        ]
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    full_name:{
+                        $concat: [
+                            {$arrayElemAt: ["$user.first_name", 0] },
+                            " ",
+                            {$arrayElemAt: ["$user.last_name", 0] }
+                        ]
+                    },
+                    role: 1,
+                    basic_salary: {$arrayElemAt: ["$salary.salary", 0]},
+                    salary_adavance: {$arrayElemAt: ["$salary.salary_advance", 0]},
+                    total_hours: "$total_hours",
+                    hourly_rate: { $arrayElemAt: ["$overtime.hourly_rate", 0] },
+                    paid_salary: { 
+                        $sum: [
+                                { $multiply: [
+                                    { $arrayElemAt: ["$overtime.hourly_rate", 0] },
+                                    "$total_hours"
+                                ]
+                            },
+                            "$remaining_salary"
+                        ]
+                    },
+                }
+            },
+            {
+                $sort: { paid_salary: -1 }
+            }
+        ]);
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                empSalaries
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            status: 'fail',
+            message: 'internal error',
+            error: error.message
+        });
+    }
+}

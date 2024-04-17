@@ -6,6 +6,15 @@ const salary = new Schema({
     salary: {type: Number, default: 0.00},
     salary_advance: {type: Number, default: 0.00},
     created_at: {type: Date, deafault: Date.now}
+},
+{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+}
+);
+
+salary.virtual('remaining_salary').get(function(){
+    return this.salary - this.salary_advance;
 });
 
 module.exports = mongoose.model("salary", salary);

@@ -12,6 +12,15 @@ const employee = new Schema({
         default: "Employee",
         enum: roles
     },
+    employment_type: {
+        type: String,
+        default: "Casual",
+        enum: ['Casual', 'Contract', 'Permanent']
+    },
+    contract_length: {
+        type: Number,
+        default: 1,
+    },
     created_at: {type: Date, default: Date.now}
 });
 

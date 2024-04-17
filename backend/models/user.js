@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
+    first_name: { type: String, required: true, proper: true },
+    last_name: { type: String, required: true, proper: true},
     email: {
         type: String,
         required: true,
@@ -15,6 +15,35 @@ const userSchema = new Schema({
     },
     photo: String,
     phone: { type: String, required: true },
+    gender: {
+        type: String,
+        enum: ['Male', 'Female']
+    },
+    marital_status: {
+        type: String,
+        enum: ['Married', 'Single', 'Separated', 'Divorsed', 'Come we stay']
+    },
+    date_of_birth: {
+        type: Date,
+        required: true
+    },
+    next_of_kin: {
+        type: String 
+    },
+    next_of_kin_contact: {
+        type: String
+    },
+    next_of_kin_relationship: {
+        type: String,
+        enum: ['Spouce', 'Mother', 'Father','Son', 'Doughter', 'Relative', 'Prefer not say']
+    },
+    health_condition: {
+        type: String,
+        enum: ['Yes', 'No']
+    },
+    what_condition: {
+        type: String
+    },
     password: {
         type: String,
         required: [true, "Please provide a password"],
