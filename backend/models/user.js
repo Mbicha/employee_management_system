@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    first_name: { type: String, required: true, proper: true },
-    last_name: { type: String, required: true, proper: true},
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
     email: {
         type: String,
         required: true,
@@ -35,7 +35,7 @@ const userSchema = new Schema({
     },
     next_of_kin_relationship: {
         type: String,
-        enum: ['Spouce', 'Mother', 'Father','Son', 'Doughter', 'Relative', 'Prefer not say']
+        enum: ['Spouce', 'Mother', 'Father','Son', 'Doughter', 'Relative', 'Dating','Prefer not say']
     },
     health_condition: {
         type: String,
@@ -78,6 +78,11 @@ userSchema.pre('save', async function(next) {
 
     this.confirm_password = undefined;
 
+    next();
+});
+
+userSchema.post('findOneAndUpdate', function(next){
+    this.created_date=undefined;
     next();
 });
 
