@@ -8,7 +8,7 @@
     "start": "npm server.js",
     "server": "nodemon server.js",
     "client": "npm run start --prefix ../frontend",
-    "dev": "npm run server"
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Charles Mbithi",
   "license": "ISC",

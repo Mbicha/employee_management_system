@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const project = new Schema({
+const projectSchema = new Schema({
     dept_id: { type: Schema.Types.ObjectId, ref: 'department' },
     project_title: {
         type: String,
-        minlength: [1, 'Minimum Length is 1 Character'],
-        equired: true
+        minlength: 1, // Minimum Length is 1 Character
+        required: true,
+        unique: true
     },
     project_desc: {
         type: String,
-        minlength: [50, 'Minimum length should be 50 characters']
+        minlength: 50 // Minimum length should be 50 characters
     },
     project_manager: String,
     start_date: {
@@ -27,4 +28,4 @@ const project = new Schema({
     updated_at: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Project', project);
+module.exports = mongoose.model('Project', projectSchema);

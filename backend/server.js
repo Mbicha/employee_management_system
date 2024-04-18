@@ -5,13 +5,14 @@ const cookie = require('cookie-parser');
 require('./config/db.config');
 
 const auth = require('./routes/route_auth');
-const department = require('./routes/department')
+const department = require('./routes/department');
 const location = require('./routes/location');
 const designation = require('./routes/designation');
 const employee = require("./routes/employee");
 const salary = require("./routes/salary");
 const overtime = require("./routes/overtime");
-const user = require("./routes/user")
+const user = require("./routes/user");
+const project = require("./routes/project");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/employees', employee)
 app.use('/api/salaries', salary)
 app.use('/api/overtimes', overtime)
 app.use('/api/users/data', user);
+app.use('/api/project', project);
 
 
 const PORT = process.env.PORT || 5000;
