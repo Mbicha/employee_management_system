@@ -13,6 +13,7 @@ const salary = require("./routes/salary");
 const overtime = require("./routes/overtime");
 const user = require("./routes/user");
 const project = require("./routes/project");
+const task = require('./routes/task');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/salaries', salary)
 app.use('/api/overtimes', overtime)
 app.use('/api/users/data', user);
 app.use('/api/project', project);
+app.use('/api/tasks', task);
 
 
 const PORT = process.env.PORT || 5000;

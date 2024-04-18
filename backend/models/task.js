@@ -6,7 +6,7 @@ const task = new Schema({
     project_id: {
         type: Schema.Types.ObjectId, ref: 'project'
     },
-    task_title: { type: String, required: true},
+    task_title: { type: String, required: true, unique: true},
     task_desc: String,
     start_date: Date,
     end_date: Date,
