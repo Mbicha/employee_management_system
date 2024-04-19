@@ -15,7 +15,9 @@ import Deparments from "./pages/Deparments";
 import ContactUs from "./pages/ContactUs";
 import Login from './pages/Login';
 import Employees from "./pages/Employees";
-import EmployeeData from './pages/EmployeeData';
+import Project from "./pages/Project";
+import Task from "./pages/Task";
+// import EmployeeData from './pages/EmployeeData';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -58,6 +60,18 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login/>
+      },
+      {
+        path: "/projects",
+        element: <Project/>
+      },
+      {
+        path: "/tasks",
+        element: <Task/>
+      },
+      {
+        path: "/employees",
+        element: <Employees/>
       }
     ]
   }

@@ -161,7 +161,6 @@ exports.getEmployeeBasicInfo = async (req, res) => {
             },
             {
                 $project: {
-                    _id: 0,
                     full_name:{
                         $concat: [
                             {$arrayElemAt: ["$user.first_name", 0] },
@@ -179,9 +178,7 @@ exports.getEmployeeBasicInfo = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            data: {
-                employees: employees
-            }
+            employees
         })
     } catch (error) {
         res.status(500).json({

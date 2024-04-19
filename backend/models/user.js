@@ -24,8 +24,7 @@ const userSchema = new Schema({
         enum: ['Married', 'Single', 'Separated', 'Divorsed', 'Come we stay']
     },
     date_of_birth: {
-        type: Date,
-        required: true
+        type: Date
     },
     next_of_kin: {
         type: String 

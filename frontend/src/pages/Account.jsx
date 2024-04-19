@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import http from "../http-common";
 
 const Account = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        first_name: "", last_name: "", email: "", phone: "", password: ""
+        first_name: "", last_name: "", email: "", phone: "", password: "", confirm_password: ""
     });
 
     const handleFormChange = (event) => {
@@ -13,18 +14,7 @@ const Account = () => {
             [event.target.name]: event.target.value
         }));
     }
-
-    const getUsers = async () => {
-        try {
-            const response = await http.get('/users')
-            console.log(response);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    getUsers();
-
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -32,6 +22,7 @@ const Account = () => {
             await http.post('/user/register', formData);
             console.log("Saved");
             event.target.reset();
+            navigate('/login');
         } catch (error) {
             console.log(error);
         }
@@ -52,6 +43,8 @@ const Account = () => {
                     <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="text" placeholder="Phone" name='phone' onChange={handleFormChange}/>
 
                     <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="password" placeholder="Password" name='password' onChange={handleFormChange}/>
+
+                    <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="password" placeholder="Confirm Password" name='confirm_password' onChange={handleFormChange}/>
 
                     <button className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4" type="button" onClick={handleSubmit}>Register</button>
                     <span>Already have an account? <Link to='/login'>Login</Link></span>

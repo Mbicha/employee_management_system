@@ -13,7 +13,10 @@ const NavBar = () => {
                     </div>
                     <div className="hidden md:flex flex-row">
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/">Home</Link></div>
+                        <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/employees">Employees</Link></div>
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/departments">Departments</Link></div>
+                        <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/projects">Projects</Link></div>
+                        <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/tasks">Tasks</Link></div>
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/contact-us">Contact Us</Link></div>
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/account">Account</Link></div>                        
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/deptdata">Test</Link></div>

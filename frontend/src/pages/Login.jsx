@@ -19,12 +19,12 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        try {
-            const response = await http.post('/user/login', formData);
+        try {            
+            const response = await http.post('/user/signin', formData);
             if (response.status === 200) {
                 // Save the token to the local storage
-                localStorage.setItem('token', response.data.foundUser._id);
-                navigate('/');
+                // localStorage.setItem('token', response.data.foundUser._id);
+                navigate('/employees');
             } else {
                 console.log("Invalid Credentials");
             }         

@@ -84,27 +84,31 @@ exports.getTasks = async (req, res) => {
             },
             {
                 $project: {
-                    _id: null,
+                    project_title: { $arrayElemAt: ['$project.project_title', 0] },
                     task: "$task_title",
                     status: "$status",
-                    assigned_to: "$members",
-                    belongs_to: {
-                        $arrayElemAt: ['$project.project_title', 0]
-                    }
+                    assigned_to: "$members"
+                }
+            },
+            {
+                $group: {
+                    _id: "$project_title",
+                    tasks: { $push: "$$ROOT" }
                 }
             }
-        ])
+        ]);
+        
         res.status(200).json({
             status: 'success',
             data: {
                 tasks
             }
-        })
+        });
 
     } catch (error) {
         res.status(500).json({
             status: 'fail',
             error
-        })
+        });
     }
 }
