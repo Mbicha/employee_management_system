@@ -17,6 +17,7 @@ import Login from './pages/Login';
 import Employees from "./pages/Employees";
 import Project from "./pages/Project";
 import Task from "./pages/Task";
+import AddDepartment from "./pages/AddDepartment";
 // import EmployeeData from './pages/EmployeeData';
 
 // Import Components
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
         element: <Account/>
       },
       {
-        path: "/deptdata",
+        path: "/deptdata/:id",
         element: <DepartmentData/>
       },
       {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/employees",
         element: <Employees/>
+      },
+      {
+        path: "/add-department",
+        element: <AddDepartment/>
       }
     ]
   }

@@ -63,3 +63,39 @@ exports.getPersonalDetails = async (req, res) => {
         })
     }
 }
+
+exports.getFullName = async (req, res) => {
+    try {
+        const users = await User.aggregate([
+            {
+                $project: {
+                    _id: 0,
+                    full_name:{
+                        $concat: [
+                            "$first_name",
+                            " ",
+                            "$last_name"
+                        ]
+                    },
+                }
+            }
+        ])
+
+        if(!users){
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No users'
+            })
+        }
+
+        res.status(200).json({
+            status: 'success',
+            users
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'success',
+            error
+        })
+    }
+}

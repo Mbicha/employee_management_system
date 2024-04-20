@@ -16,7 +16,6 @@ const Employees = () => {
                 console.log({ message: error });
             }
         }
-    
         getEmployees();
     }, []);
 

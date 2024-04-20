@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Department = require("../models/department");
 
 exports.createDepartment = async(req, res) => {
@@ -28,31 +29,54 @@ exports.getAllDepartments = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            data: {
-                number_of_departments: departments.length,
-                departments: departments
-            }
+            number_of_departments: departments.length,
+            departments: departments
         })
     } catch (error) {
         res.status(500).json({
             status: 'error',
-            message: 'Failed to retrieve department',
+            message: 'Failed to retrieve departments',
             error: error.message // Send error message to client
         });
     }
 }
 
+
 exports.getDepartmentById = async (req, res) => {
     try {
-        const department = await Department.findById(req.params.id)
+        const id = new mongoose.Types.ObjectId(req.params.id)
+        const department = await Department.aggregate([
+            {
+                $match: {
+                    _id: id
+                },
+            }
+        ]);
+
+        const departments = await Department.aggregate([
+            {
+                $lookup: {
+                    from: "projects",
+                    localField: "_id",
+                    foreignField: "dept_id",
+                    as: 'project'
+                },
+                $lookup: {
+                    from: "designations",
+                    localField: "_id",
+                    foreignField: "dept_id",
+                    as: "designation"
+                }
+            }
+        ])
         
         res.status(200).json({
             status: 'success',
-            data: {
-                department: department
-            }
+            department,
+            departments
         })
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'error',
             message: 'No department with such id',
