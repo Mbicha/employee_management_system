@@ -18,7 +18,7 @@ import Employees from "./pages/Employees";
 import Project from "./pages/Project";
 import Task from "./pages/Task";
 import AddDepartment from "./pages/AddDepartment";
-// import EmployeeData from './pages/EmployeeData';
+import AddProject from "./pages/AddProject";
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -77,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: "/add-department",
         element: <AddDepartment/>
+      },
+      {
+        path: "/add-project",
+        element: <AddProject/>
       }
     ]
   }

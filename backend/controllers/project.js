@@ -1,3 +1,4 @@
+const { Mongoose } = require('mongoose');
 const Project = require('../models/project');
 
 exports.createProject = async (req, res) => {
@@ -11,6 +12,7 @@ exports.createProject = async (req, res) => {
             }
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'fail',
             error
@@ -80,15 +82,37 @@ exports.getProjects = async (req, res) => {
                 }
             },
             {
+                $lookup: {
+                    from: 'tasks',
+                    localField: "_id",
+                    foreignField: "project_id",
+                    as: "tasks"
+                  }
+            },
+            {
+                $addFields: {
+                    year: { $year: "$end_date" },
+                    month: { $month: "$end_date" },
+                    day: {$dayOfMonth: "$end_date"}
+                }
+            },
+            {
                 $project: {
-                    _id: 0,
                     project_name: "$project_title",
                     department: { $arrayElemAt: ['$department.name', 0] },
                     status: '$status',
                     pm: "$project_manager",
-                    ends_in: "$end_date",
+                    ends_in: {
+                        $concat: [
+                            { $toString: "$year" },
+                            "-",
+                            { $toString: "$month" },
+                            "-",
+                            { $toString: "$day" }
+                        ]
+                    },
                     percentage_complete: "No data yet",
-                    year: {$year: '$end_date'}
+                    total_tasks: { $size: '$tasks' }                
                 }
             }
         ]);
@@ -102,9 +126,8 @@ exports.getProjects = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            data: [
-                projects
-            ]
+            number_of_projects: projects.length,
+            projects
         });
     } catch (error) {
         res.status(500).json({
@@ -113,3 +136,62 @@ exports.getProjects = async (req, res) => {
         });
     }
 }
+
+exports.getProjectById = async (req, res) => {
+    try {
+        const {id} = new Mongoose.Types.ObjectId(req.params.id)
+        const projects = await Project.aggregate([
+            {
+                $match: {
+                    _id: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'departments',
+                    localField: 'dept_id',
+                    foreignField: '_id',
+                    as: 'department'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'tasks',
+                    localField: "_id",
+                    foreignField: "project_id",
+                    as: "tasks"
+                  }
+            },
+            {
+                $project: {
+                    project_name: "$project_title",
+                    department: { $arrayElemAt: ['$department.name', 0] },
+                    status: '$status',
+                    pm: "$project_manager",
+                    ends_in: "$end_date",
+                    percentage_complete: "No data yet",
+                    total_tasks: { $size: '$tasks' }                
+                }
+            }
+        ]);
+
+        if(!projects){
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No Projects Yet!!'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            number_of_projects: projects.length,
+            projects
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'fail',
+            error
+        });
+    }
+}
+

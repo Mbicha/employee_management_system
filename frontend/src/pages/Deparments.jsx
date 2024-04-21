@@ -38,7 +38,7 @@ const Deparments = () => {
                 </div>
                 
                 {/* Departments section */}
-                <div className="flex flex-wrap md:flex-row lg:flex-row max-w-full max-h-full p-4">                
+                <div className="flex flex-wrap justify-center md:flex-row lg:flex-row max-w-full max-h-full p-4">                
                     {/* Each Department Card */}     
                     {departements.map(department => (
                         <Link key={department._id} to={`/deptdata/${department._id}`} className="flex flex-col w-72 border rounded-lg m-2 shadow-md p-2">

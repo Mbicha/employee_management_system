@@ -51,7 +51,7 @@ const DepartmentData = () => {
                         <div className="flex flex-col w-full md:w-1/2 lg:1/2 md:h-screen lg:h-screen ml-4">
                             <h1 className="sub-header">Duties</h1>
                             <hr />
-                            <ul className="flex flex-col max-h-36 overflow-y-auto">
+                            <ul className="flex flex-col max-h-28 overflow-y-auto">
                                 <li>Duty 1</li>
                                 <li>Duty 2</li>
                                 <li>Duty 3</li>

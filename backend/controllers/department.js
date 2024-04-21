@@ -45,15 +45,13 @@ exports.getAllDepartments = async (req, res) => {
 exports.getDepartmentById = async (req, res) => {
     try {
         const id = new mongoose.Types.ObjectId(req.params.id)
-        const department = await Department.aggregate([
-            {
-                $match: {
-                    _id: id
-                },
-            }
-        ]);
 
         const departments = await Department.aggregate([
+            {
+                $match: {
+                _id: id
+                }
+            },            
             {
                 $lookup: {
                     from: "projects",
@@ -66,13 +64,39 @@ exports.getDepartmentById = async (req, res) => {
                     localField: "_id",
                     foreignField: "dept_id",
                     as: "designation"
+                },
+                $lookup: {
+                    from: "employees",
+                    localField: "designation._id",
+                    foreignField: "job_id",
+                    as: "employee"
+                },
+                $lookup: {
+                    from: "users",
+                    localField: "employee._id",
+                    foreignField: "user_id",
+                    as: "user"
+                }                
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: "$name",
+                    head_of_department: "$head_of_department",
+                    full_name:{
+                        $concat: [
+                            {$arrayElemAt: ["$user.first_name", 0] },
+                            " ",
+                            {$arrayElemAt: ["$user.last_name", 0] }
+                        ]
+                    },
+                    project_title: { $arrayElemAt: ["$project.project_title", 0] }
                 }
             }
         ])
         
         res.status(200).json({
             status: 'success',
-            department,
             departments
         })
     } catch (error) {
