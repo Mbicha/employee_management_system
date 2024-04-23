@@ -83,26 +83,35 @@ exports.getTasks = async (req, res) => {
                 }
             },
             {
+                $addFields: {
+                    year: { $year: "$end_date"},
+                    month: { $month: "$end_date"},
+                    day: { $dayOfMonth: "$end_date"}
+                }
+            },
+            {
                 $project: {
                     project_title: { $arrayElemAt: ['$project.project_title', 0] },
-                    task: "$task_title",
+                    task_title: "$task_title",
+                    ends_in: {
+                        $concat: [
+                            { $toString: "$year" },
+                            "-0",
+                            { $toString: "$month" },
+                            "-",
+                            { $toString: "$day" }
+                        ]
+                    },
+                    task_desc: "$task_desc",
                     status: "$status",
                     assigned_to: "$members"
                 }
             },
-            {
-                $group: {
-                    _id: "$project_title",
-                    tasks: { $push: "$$ROOT" }
-                }
-            }
         ]);
         
         res.status(200).json({
             status: 'success',
-            data: {
-                tasks
-            }
+            tasks
         });
 
     } catch (error) {

@@ -19,6 +19,7 @@ import Project from "./pages/Project";
 import Task from "./pages/Task";
 import AddDepartment from "./pages/AddDepartment";
 import AddProject from "./pages/AddProject";
+import AddTask from './pages/AddTask';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
       {
         path: "/add-project",
         element: <AddProject/>
+      },
+      {
+        path: "/add-task",
+        element: <AddTask/>
       }
     ]
   }
