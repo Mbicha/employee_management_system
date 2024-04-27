@@ -42,12 +42,6 @@ const Task = () => {
                                 {task.task_title}
                             </div>
                             <div className="pt-4">
-                                    <span className="text-green-600 font-semibold mr-1">
-                                        Task Name:
-                                    </span>
-                                    {task.project_title}
-                            </div>
-                            <div className="pt-4">
                                 <span className="text-green-600 font-semibold mr-1">
                                     Status:
                                 </span>

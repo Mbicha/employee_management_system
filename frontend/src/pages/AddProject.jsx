@@ -6,7 +6,7 @@ const AddProject = () => {
     const navigate = useNavigate();
     const [departments, setDepartments] = useState([]);
     const [formData, setFormData] = useState({
-        dept_id: "", project_title: "", project_desc: "", project_manager: "", start_date: "", end_date: "", status: ""
+        dept_id: null, project_title: "", project_desc: "", project_manager: "", start_date: "", end_date: "", status: ""
     });
 
     const handleFormChange = (event) => {

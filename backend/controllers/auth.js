@@ -58,6 +58,7 @@ exports.signin = async (req, res) => {
 
     res.status(200).send({
       status: 'success',
+      existing_user,
       token
     });
 };
@@ -66,7 +67,20 @@ exports.signin = async (req, res) => {
 // All users
 exports.getUsers = async(req, res) => {
     try {
-        const users = await user.find({});
+        const users = await user.aggregate([
+          {
+            $project: {
+              full_name:{
+                $concat: [
+                  "$first_name",
+                  " ",
+                  "$last_name"
+                ]
+              },
+              email: "$email"
+            }
+          }
+        ]);
         res.send({ 
           "num_users": users.length,
           users 

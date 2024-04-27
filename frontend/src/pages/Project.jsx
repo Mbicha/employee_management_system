@@ -35,7 +35,7 @@ const Project = () => {
                             Add Project
                         </Link>
                     </div>
-                </div>
+                </div>                
                 
                 {/* Departments section */}
                 <div className="flex flex-wrap justify-center md:flex-row lg:flex-row max-w-full max-h-full p-4">                

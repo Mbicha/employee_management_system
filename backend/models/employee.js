@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const roles = ['Employee', 'Staff', 'Admin']
+const roles = ['Employee', 'Staff', 'Admin', 'Director']
 
 const employee = new Schema({
-    job_id: {type: Schema.Types.ObjectId, ref: "designation", unique: true},
+    job_id: {type: Schema.Types.ObjectId, ref: "designation"},
     user_id: {type: Schema.Types.ObjectId, ref: "user", unique: true},
     role: {
         type: String,
@@ -19,7 +19,7 @@ const employee = new Schema({
     },
     contract_length: {
         type: Number,
-        default: 1,
+        default: 1.0,
     },
     created_at: {type: Date, default: Date.now}
 });

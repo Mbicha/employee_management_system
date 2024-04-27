@@ -21,10 +21,13 @@ const Login = () => {
 
         try {            
             const response = await http.post('/user/signin', formData);
+            
             if (response.status === 200) {
+                const id = response.data.existing_user._id
+                console.log(id);
                 // Save the token to the local storage
-                // localStorage.setItem('token', response.data.foundUser._id);
-                navigate('/employees');
+                localStorage.setItem('token', id);
+                navigate("/profile/"+id);
             } else {
                 console.log("Invalid Credentials");
             }         

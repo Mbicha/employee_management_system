@@ -20,6 +20,9 @@ import Task from "./pages/Task";
 import AddDepartment from "./pages/AddDepartment";
 import AddProject from "./pages/AddProject";
 import AddTask from './pages/AddTask';
+import AddEmployee from './pages/AddEmployee';
+import AddLocation from './pages/AddLocation';
+import Profile from './pages/Profile';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -76,6 +79,10 @@ const router = createBrowserRouter([
         element: <Employees/>
       },
       {
+        path: "/profile/:id",
+        element: <Profile/>
+      },
+      {
         path: "/add-department",
         element: <AddDepartment/>
       },
@@ -86,6 +93,14 @@ const router = createBrowserRouter([
       {
         path: "/add-task",
         element: <AddTask/>
+      },
+      {
+        path: "/add-employee",
+        element: <AddEmployee/>
+      },
+      {
+        path: "/add-location",
+        element: <AddLocation/>
       }
     ]
   }

@@ -1,4 +1,5 @@
 import react, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import http from "../http-common";
 
 //Import components
@@ -21,8 +22,21 @@ const Employees = () => {
 
     return (
         <div>
-            <section className='flex flex-col md:flex-row lg:flex-row max-w-full max-h-full p-4'>
-                <div className='flex flex-wrap w-full items-left justify-start border rounded-lg'>
+            <section className='flex flex-col'>
+                {/* Heading Section */}
+                <div className="flex flex-col border-gray-10 pr-5 pl-5 pt-5 pb-1">
+                    <h1 className="flex flex-row justify-center bg-gray-800 text-green-600 border-b-2 border-green-600 p-3 font-serif font-bold text-2xl">
+                        EMPLOYEES
+                    </h1>
+                    <div className="flex flex-row justify-between border-b-2 border-green-600 p-2">
+                        <h1>Total Employees: {}</h1>
+                        <Link to="/add-employee" className="bg-green-600 p-1 border rounded-md">
+                            Add Employee
+                        </Link>
+                    </div>
+                </div>
+
+                <div className='flex flex-wrap w-full items-left justify-center border rounded-lg'>
                     {/* Start of Employee card */}
                     {employees.map(employee => 
                         <div key={employee._id} className='flex flex-col border rounded-lg mr-1 mb-1 w-full sm:w-1/2 md:w-1/4 lg:w-1/4'>
@@ -55,9 +69,6 @@ const Employees = () => {
 
                     {/* End of Employee Card */}
                     
-                </div>
-                <div className='flex flex-col border w-full md:w-1/5 lg:w-1/5 p-4 items-center'>
-                    <NoticeBoard/>
                 </div>
             </section>
         </div>
