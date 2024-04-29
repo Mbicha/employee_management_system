@@ -64,6 +64,23 @@ exports.getEmployeeById = async (req, res) => {
     }
 }
 
+exports.getEmployeeByUserId = async (req, res) => {
+    try {
+        const employee = await Employee.find({user_id: req.params.id})
+        
+        res.status(200).json({
+            status: 'success',
+            employee: employee
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'No Data Available',
+            error: error.message // Send error message to client
+        });
+    }
+}
+
 exports.updateEmployee = async (req, res) => {
     try {
         const employee = await Employee.findByIdAndUpdate(
@@ -279,9 +296,7 @@ exports.getEmployeeSalaries = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            data: {
-                empSalaries
-            }
+            empSalaries
         })
     } catch (error) {
         console.log(error);

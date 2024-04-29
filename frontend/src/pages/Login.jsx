@@ -24,10 +24,9 @@ const Login = () => {
             
             if (response.status === 200) {
                 const id = response.data.existing_user._id
-                console.log(id);
                 // Save the token to the local storage
                 localStorage.setItem('token', id);
-                navigate("/profile/"+id);
+                navigate(`/profile/${id}`);
             } else {
                 console.log("Invalid Credentials");
             }         

@@ -23,10 +23,11 @@ import AddTask from './pages/AddTask';
 import AddEmployee from './pages/AddEmployee';
 import AddLocation from './pages/AddLocation';
 import Profile from './pages/Profile';
+import DepartmentData from './pages/DepartmentData';
+import Salaries from './pages/Salaries';
 
 // Import Components
 import NavBar from "./components/NavBar";
-import DepartmentData from './pages/DepartmentData';
 
 const Layout = () => {
   return (
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "/employees",
         element: <Employees/>
+      },
+      {
+        path: "/salaries",
+        element: <Salaries/>
       },
       {
         path: "/profile/:id",

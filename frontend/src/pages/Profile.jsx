@@ -5,9 +5,25 @@ import http from "../http-common";
 import NoticeBoard from "../components/NoticeBoard";
 
 const Profile = () => {
-    const {id} = useParams();
-
+    const id = localStorage.getItem("token");
     const [profile, setProfile] = useState([]);
+    const [location, setLocation] = useState([]);
+    const [employee, setEmployee] = useState([]);
+
+    useEffect(() =>{
+        const getEmployee = async () => {
+            try {
+                const response = await http.get(`/employees/data/employee/${id}`);
+                if((response.data.status === "fail") || (employee.length <= 0)){
+                    console.log("No data");
+                }
+                setEmployee(response.data.employee)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getEmployee()
+    },[])
 
     useEffect(() =>{
         const getProfile = async () => {
@@ -20,6 +36,21 @@ const Profile = () => {
         }
 
         getProfile()
+    },[])
+
+    useEffect(() => {
+        const getLocation = async () => {
+           try {
+            const response = await http.get(`/locations/employee/${id}`);
+            if(response.data.status === 'fail') {
+                console.log("There is No data");
+            }
+            setLocation(response.data.location)
+           } catch (error) {
+            console.log(error);
+           }
+        }
+        getLocation()
     },[])
 
     return(
@@ -117,15 +148,49 @@ const Profile = () => {
 
                             <div className="shadow-md rounded-md p-2">
                                 <h1 className="sub-header">Employment Details</h1>
+                                <hr />
+                                {employee.map(emplo =>(
+                                    <ul key={emplo._id} className="flex flex-col max-h-28 overflow-y-auto">
+                                        <li>
+                                            <span className="font-semibold text-green-800">
+                                                Employment Type:  
+                                            </span>
+                                            {emplo.employment_type}
+                                        </li>
+                                        <li>
+                                            <span className="font-semibold text-green-800">
+                                                Contract Length:  
+                                            </span>
+                                            {emplo.contract_length}
+                                        </li>
+                                    </ul>
+                                ))}
                             </div>
 
                             <div className="shadow-md rounded-md p-2">
                                 <div className="flex flex-row justify-between">
                                     <h1 className="sub-header">Location</h1>
-                                    <Link className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
+                                    <hr />                                   
+                                    <Link to={`/add-location`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
                                         Update Location
                                     </Link>
                                 </div>
+                                {location.map(loc =>(
+                                    <ul key={loc._id} className="flex flex-col max-h-28 overflow-y-auto">
+                                        <li>
+                                            <span className="font-semibold text-green-800">
+                                                Country:  
+                                            </span>
+                                            {loc.country}
+                                        </li>
+                                        <li>
+                                            <span className="font-semibold text-green-800">
+                                                Address:  
+                                            </span>
+                                            {loc.address}
+                                        </li>
+                                    </ul>
+                                ))}                               
                                 
                             </div>
                             

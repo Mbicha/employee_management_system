@@ -49,8 +49,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getPersonalDetails = async (req, res) => {
     try {
-        const {id} = req.body;
-        const personalDetails = await User.findOne({id});
+        const personalDetails = await User.findById(req.params.id);
         res.status(200).json({
             status: 'success',
             personalDetails
