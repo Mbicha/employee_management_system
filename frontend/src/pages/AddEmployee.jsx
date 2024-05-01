@@ -38,6 +38,7 @@ const AddEmployee = () => {
     const getUsers = async () => {
         try {
             const response = await http.get("/users")
+            console.log(response.data.users);
             setUsers(response.data.users);
         } catch (error) {
             console.log(error);

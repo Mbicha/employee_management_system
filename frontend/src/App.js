@@ -6,7 +6,7 @@ import {
   Outlet
 } from "react-router-dom";
 
-import React, { useState } from 'react';
+import React from 'react';
 
 // Import Pages
 import Home from "./pages/Home";
@@ -25,6 +25,7 @@ import AddLocation from './pages/AddLocation';
 import Profile from './pages/Profile';
 import DepartmentData from './pages/DepartmentData';
 import Salaries from './pages/Salaries';
+import AddSalary from './pages/AddSalary';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "/add-location",
         element: <AddLocation/>
+      },
+      {
+        path: "/add-salary",
+        element: <AddSalary/>
       }
     ]
   }

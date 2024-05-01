@@ -18,8 +18,7 @@ const NavBar = () => {
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/projects">Projects</Link></div>
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/tasks">Tasks</Link></div>
                         <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/contact-us">Contact Us</Link></div>
-                        <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/account">Account</Link></div>                        
-                        <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/deptdata">Test</Link></div>
+                        <div className="ml-4 py-2 px-2 rounded hover:bg-green-700"><Link to="/account">Account</Link></div>
                     </div>
                     <div className="md:hidden">
                         <button className="flex items-center px-3 py-2 border rounded text-green-700 border-gray-600 hover:text-white hover:border-white">

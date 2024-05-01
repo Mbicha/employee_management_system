@@ -41,23 +41,26 @@ const Salaries = () => {
                             </Link>
                         </div>                        
                     </div>
-                    <div className="flex flex-col justify-center">
-                        <div className="flex flex-row justify-between w-1/3 text-green-600 border-b-2 border-green-600 p-3 font-serif font-semibold text-2xl">
-                            <div>Full Name</div>
-                            <div>Role</div>
-                            <div>Basic Salary</div>
-                        </div>
-                        {/* Salaries Section */}
-                        {
-                            salaries.map(employeeSalary =>
-                                <div key={employeeSalary.full_name} className="flex flex-row justify-between w-1/3">
-                                    <div className="flex justify-start">{employeeSalary.full_name}</div>
-                                    <div className="flex justify-start">{employeeSalary.role}</div>
-                                    <div className="flex justify-start">{employeeSalary.basic_salary}</div>
-                                </div>
-                            )
-                        }                        
-                    </div>                    
+                    <table className="flex flex-col justify-center border-2 border-green-700 rounded-b-md mt-2">
+                        <thead>
+                            <tr className="flex flex-row justify-between border-b border-green-700">
+                                <th className="px-4 py-2">Full Name</th>
+                                <th className="px-4 py-2">Role</th>
+                                <th className="px-4 py-2">Basic Salary</th>
+                                <th className="px-4 py-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {salaries.map(employee_salary =>
+                                <tr key={employee_salary.full_name} className="flex flex-row justify-between border-b">
+                                    <td className="px-4 py-2">{employee_salary.full_name}</td>
+                                    <td className="px-4 py-2">{employee_salary.role}</td>
+                                    <td className="px-4 py-2">{employee_salary.basic_salary}</td>
+                                    <td className="px-4 py-2"><Link>Pay</Link></td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>              
                 </div>
             </section>                            
         </>
