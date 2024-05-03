@@ -44,9 +44,7 @@ exports.getSalaryById = async (req, res) => {
         
         res.status(200).json({
             status: 'success',
-            data: {
-                salary: salary
-            }
+            salary
         })
     } catch (error) {
         res.status(500).json({

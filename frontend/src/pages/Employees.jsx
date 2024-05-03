@@ -61,7 +61,7 @@ const Employees = () => {
                                 </h2>
                                 <hr></hr>
                                 <div className='flex justify-end'>
-                                    <button className='bg-green-800 w-24 rounded-lg text-white p-2 mt-1'>View</button>
+                                    <Link to={`/add-employee/${employee._id}`} className='bg-green-800 w-24 rounded-lg text-white p-2 mt-1'>View</Link>
                                 </div>
                             </div>
                         </div>

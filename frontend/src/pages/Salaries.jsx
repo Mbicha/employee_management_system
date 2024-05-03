@@ -2,7 +2,7 @@ import {React, useState, useEffect} from "react"
 import { Link } from "react-router-dom"
 import httpCommon from "../http-common";
 
-const Salaries = () => {
+const Salaries = () => {    
     const id = localStorage.getItem('token');
     const [salaries, setSalaries] = useState([]);
     
@@ -52,11 +52,16 @@ const Salaries = () => {
                         </thead>
                         <tbody>
                             {salaries.map(employee_salary =>
-                                <tr key={employee_salary.full_name} className="flex flex-row justify-between border-b">
+                                <tr key={employee_salary.salary_id} className="flex flex-row justify-between border-b">
                                     <td className="px-4 py-2">{employee_salary.full_name}</td>
                                     <td className="px-4 py-2">{employee_salary.role}</td>
                                     <td className="px-4 py-2">{employee_salary.basic_salary}</td>
-                                    <td className="px-4 py-2"><Link>Pay</Link></td>
+                                    <td className="px-4 py-2">
+                                        <div className="flex flex-row justify-between">
+                                            <Link className="flex justify-center bg-green-800 p-1 text-white rounded-md w-14">Pay</Link>
+                                            <Link to={`/add-salary/${employee_salary.salary_id}`} className="flex justify-center bg-green-800 p-1 text-white rounded-md w-14 ml-1">Update</Link>
+                                        </div>                                        
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

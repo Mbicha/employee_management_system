@@ -51,9 +51,7 @@ exports.getEmployeeById = async (req, res) => {
         
         res.status(200).json({
             status: 'success',
-            data: {
-                employee: employee
-            }
+            employee
         })
     } catch (error) {
         res.status(500).json({
@@ -264,7 +262,6 @@ exports.getEmployeeSalaries = async (req, res) => {
             },
             {
                 $project: {
-                    _id: 0,
                     full_name:{
                         $concat: [
                             {$arrayElemAt: ["$user.first_name", 0] },
@@ -273,6 +270,8 @@ exports.getEmployeeSalaries = async (req, res) => {
                         ]
                     },
                     role: 1,
+                    user_id: {$arrayElemAt: ["$user._id", 0]},
+                    salary_id: {$arrayElemAt: ["$salary._id", 0]},
                     basic_salary: {$arrayElemAt: ["$salary.salary", 0]},
                     salary_adavance: {$arrayElemAt: ["$salary.salary_advance", 0]},
                     total_hours: "$total_hours",

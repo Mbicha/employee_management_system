@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import http from "../http-common";
 
 const AddEmployee = () => {
+    const navigate = useNavigate();
+    const {id} = useParams();
     const [designations, setDesignations] = useState([]);
     const [users, setUsers] = useState([]);
     const [filterUsers, setFilterUsers] = useState([]);
     const [employees, setEmployees] = useState([]);
-    const navigate = useNavigate();
+    const [employeeData, setEmployeeData] = useState([]);
     const [formData, setFormData] = useState({
         user_id: filterUsers.length > 0 ? filterUsers[0]._id: null,
         job_id: designations.length > 0 ? designations[0]._id : null,
@@ -16,12 +18,28 @@ const AddEmployee = () => {
         contract_length: 0.0
     })
 
+    /**
+     * Handle form change event by updating the form data state with the new value.
+     * @param {Event} event - The event object containing the form input's name and value.
+     */
     const handleFormChange = (event) => {
         setFormData(prev => ({
             ...prev,
             [event.target.name]: event.target.value
         }));
     }
+
+    useEffect(() => {
+        const getEmployee = async () => {
+            try {
+                const response = await http.get(`/employees/${id}`)
+                setEmployeeData(response.data.employee)     
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getEmployee()
+    },[])
 
     useEffect(() => {
         const getEmployees = async () => {
@@ -35,17 +53,15 @@ const AddEmployee = () => {
         getEmployees()
     },[])
 
-    const getUsers = async () => {
-        try {
-            const response = await http.get("/users")
-            console.log(response.data.users);
-            setUsers(response.data.users);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const response = await http.get("/users")
+                setUsers(response.data.users);
+            } catch (error) {
+                console.log(error);
+            }
+        }
         getUsers()
     }, []);
 
@@ -67,7 +83,7 @@ const AddEmployee = () => {
                 const employeeEmails = employees.map(
                     employee => employee.email
                 )
-
+                
                 const filteredUsers = users.filter(user => !employeeEmails.includes(user.email))
                 setFilterUsers(filteredUsers);
             } catch (error) {
@@ -77,11 +93,25 @@ const AddEmployee = () => {
         getFilteredUsers()
     },[])
 
+    useEffect(() => {
+        const getEmployeeData = () => {
+            try {
+                const user = users.find(user => user._id === id);
+                if (user) {
+                    setEmployeeData(user);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getEmployeeData();
+    }, [id, users]);
+
     const handleSubmit = async (event) =>{
         try {
             await http.post('/employees', formData);
             console.log('Saved!!');
-            navigate("/employees/data/basic-info")
+            navigate("/employees")
         } catch (error) {
             console.log(error);
         }

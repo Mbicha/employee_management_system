@@ -6,9 +6,27 @@ import NoticeBoard from "../components/NoticeBoard";
 
 const Profile = () => {
     const id = localStorage.getItem("token");
+    const [hours, setHours] = useState([]);
     const [profile, setProfile] = useState([]);
     const [location, setLocation] = useState([]);
     const [employee, setEmployee] = useState([]);
+
+    useEffect(() => {
+        const getHour = () => {
+            try {
+                let date = new Date();
+                setHours(date.getHours())
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getHour();
+        // Set up interval to update time every second (1000 milliseconds)
+        const intervalId = setInterval(getHour, 1000);
+
+        // Clear interval on component unmount
+        return () => clearInterval(intervalId);
+    },[])
 
     useEffect(() =>{
         const getEmployee = async () => {
@@ -53,6 +71,20 @@ const Profile = () => {
         getLocation()
     },[])
 
+    const checkTime = () =>{
+        if(hours > 0 && hours < 12) {
+            return "Good Morning"
+        } else if (hours >= 12 && hours < 17) {
+            return "Good Afternoon"
+        } else if (hours >= 17 && hours < 21) {
+            return "Good Evening"
+        } else {
+            return "Good Night"
+        }
+    }
+
+    console.log(employee);
+
     return(
         <>
             {<section className="flex flex-col w-full md:flex-row lg:flex-row">
@@ -84,7 +116,7 @@ const Profile = () => {
                         <div className="flex flex-col w-full md:w-1/2 lg:1/2 md:h-screen lg:h-screen m-1">
                             <div className="flex flex-row justify-between border-b-2 border-green-800 shadow-md p-1 mb-2">
                                 <div>
-                                    Greetings! {profile.first_name} {profile.last_name}
+                                    {checkTime()}! {profile.first_name} {profile.last_name}
                                 </div>
                                 <Link className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
                                     Update
@@ -161,7 +193,7 @@ const Profile = () => {
                                             <span className="font-semibold text-green-800">
                                                 Contract Length:  
                                             </span>
-                                            {emplo.contract_length}
+                                            {emplo.contract_length} Years
                                         </li>
                                     </ul>
                                 ))}

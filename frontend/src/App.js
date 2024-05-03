@@ -105,11 +105,19 @@ const router = createBrowserRouter([
         element: <AddEmployee/>
       },
       {
+        path: "/add-employee/:id",
+        element: <AddEmployee/>
+      },
+      {
         path: "/add-location",
         element: <AddLocation/>
       },
       {
         path: "/add-salary",
+        element: <AddSalary/>
+      },
+      {
+        path: "/add-salary/:id",
         element: <AddSalary/>
       }
     ]
