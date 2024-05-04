@@ -19,6 +19,27 @@ exports.createLocation = async (req, res) => {
     }
 }
 
+exports.getLocationById = async (req, res) => {
+    try {
+        const location = await Location.findById(req.params.id)
+        if(!location){
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No such location'
+            });
+        }
+        res.status(200).json({
+            status: 'success',
+            location
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'fail',
+            error
+        });
+    }
+}
+
 exports.getEmployeeLocationByUserId = async (req, res) => {
     try {
         const location = await Location.find({ user_id: req.params.id })

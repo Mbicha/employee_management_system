@@ -113,6 +113,10 @@ const router = createBrowserRouter([
         element: <AddLocation/>
       },
       {
+        path: "/add-location/:id",
+        element: <AddLocation/>
+      },
+      {
         path: "/add-salary",
         element: <AddSalary/>
       },

@@ -83,8 +83,6 @@ const Profile = () => {
         }
     }
 
-    console.log(employee);
-
     return(
         <>
             {<section className="flex flex-col w-full md:flex-row lg:flex-row">
@@ -198,33 +196,37 @@ const Profile = () => {
                                     </ul>
                                 ))}
                             </div>
-
-                            <div className="shadow-md rounded-md p-2">
-                                <div className="flex flex-row justify-between">
-                                    <h1 className="sub-header">Location</h1>
-                                    <hr />                                   
-                                    <Link to={`/add-location`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
-                                        Update Location
-                                    </Link>
+                            {location.map(loc =>(
+                                <div className="shadow-md rounded-md p-2">                                
+                                    <div className="flex flex-row justify-between">
+                                        <h1 className="sub-header">Location</h1>
+                                        <hr />
+                                        <div className="flex flex-row ml-2">
+                                            <Link to={`/add-location`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
+                                                Add
+                                            </Link>               
+                                            <Link to={`/add-location/${loc._id}`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
+                                                Update
+                                            </Link>
+                                        </div>                     
+                                    </div>                                
+                                        <ul key={loc._id} className="flex flex-col max-h-28 overflow-y-auto">
+                                            <li>
+                                                <span className="font-semibold text-green-800">
+                                                    Country:  
+                                                </span>
+                                                {loc.country}
+                                            </li>
+                                            <li>
+                                                <span className="font-semibold text-green-800">
+                                                    Address:  
+                                                </span>
+                                                {loc.address}
+                                            </li>
+                                        </ul>
+                                    
                                 </div>
-                                {location.map(loc =>(
-                                    <ul key={loc._id} className="flex flex-col max-h-28 overflow-y-auto">
-                                        <li>
-                                            <span className="font-semibold text-green-800">
-                                                Country:  
-                                            </span>
-                                            {loc.country}
-                                        </li>
-                                        <li>
-                                            <span className="font-semibold text-green-800">
-                                                Address:  
-                                            </span>
-                                            {loc.address}
-                                        </li>
-                                    </ul>
-                                ))}                               
-                                
-                            </div>
+                            ))}  
                             
                         </div>
                         <div className="flex flex-col w-full scrollable md:w-1/4 lg:1/4 md:h-screen lg:h-screen">
