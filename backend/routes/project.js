@@ -7,6 +7,6 @@ router
     .patch('/:id', Project.updateProject)
     .delete('/:id', Project.deleteProject)
     .get('/data/', Project.getProjects)
-    .get('/:id', Project.getProjectById)
+    .get('/data/project/:id', Project.getProjectById)
 
 module.exports = router;

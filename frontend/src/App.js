@@ -97,6 +97,10 @@ const router = createBrowserRouter([
         element: <AddProject/>
       },
       {
+        path: "/add-project/:id",
+        element: <AddProject/>
+      },
+      {
         path: "/add-task",
         element: <AddTask/>
       },

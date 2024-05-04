@@ -11,7 +11,6 @@ const projectSchema = new Schema({
     },
     project_desc: {
         type: String,
-        minlength: 50 // Minimum length should be 50 characters
     },
     project_manager: String,
     start_date: {

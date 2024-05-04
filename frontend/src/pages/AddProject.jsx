@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import http from "../http-common";
 
 const AddProject = () => {
+    const {id} = useParams()
     const navigate = useNavigate();
     const [departments, setDepartments] = useState([]);
+    const [projectData, setProjectData] = useState({});
     const [formData, setFormData] = useState({
         dept_id: null, project_title: "", project_desc: "", project_manager: "", start_date: "", end_date: "", status: ""
     });
@@ -16,48 +18,84 @@ const AddProject = () => {
         }));
     }
 
-    const getDepartments = async () => {
-        try {
-            const response = await http.get("/departments")
-            setDepartments(response.data.departments);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    departments.map(dept => {
-        console.log(dept);
-    })
-
     useEffect(() => {
+        const getDepartments = async () => {
+            try {
+                const response = await http.get("/departments")
+                setDepartments(response.data.departments);
+            } catch (error) {
+                console.log(error);
+            }
+        }
         getDepartments()
+    },[])
+
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    useEffect(() =>{
+        const getProject = async () => {
+            try {
+                if(id) {
+                    const response = await http.get(`/project/data/project/${id}`)
+                    const project = response.data.project;
+
+                    const resData = project.map(proj => proj)
+
+                    setFormData((prev) => ({
+                        ...prev,
+                        dept_id: project.map(proj => proj._id),
+                        project_title: project.map(proj => proj.project_name),
+                        project_desc: project.map(proj => proj.project_desc),
+                        project_manager: project.map(proj => proj.pm),
+                        start_date: formatDate(project.map(proj => proj.start_date)),
+                        end_date: formatDate(project.map(proj => proj.ends_in)),
+                        status: project.map(proj => proj.status),
+                        department: project.map(proj => proj.department)
+                    }))
+                    setProjectData(resData)
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getProject()
     },[])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        try {            
-            const response = await http.post('/project', formData);
-            if (response.status === 200) {
-                // Save the token to the local storage
-                // localStorage.setItem('token', response.data.foundUser._id);
-                navigate('/employees');
+        try {
+            if(id){
+                await http.post(`/project/${id}`, formData);
             } else {
-                console.log("Invalid Credentials");
-            }         
-            
+                await http.post('/project', formData);
+            }
+            navigate('/projects');            
         } catch (error) {
             console.log(error);
         }
     }
+
+    const handleHeadText = id ? "Edit Project" : "Add Project";
 
     return (
         <div>
             <div className="flex flex-col justify-center items-center">
                 <form className="flex flex-col items-center rounded-lg shadow-md p-2 w-full sm:w-2/3 md:w-1/3 lg:w-1/3">
-                    <h1 className="text-center text-green-700 text-2xl mb-4">Edit Project</h1>
+                    <h1 className="text-center text-green-700 text-2xl mb-4">{handleHeadText}</h1>
 
-                    <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="text" placeholder="Project Title" name='project_title' onChange={handleFormChange}/>
+                    <input
+                        className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700"
+                        type="text"
+                        placeholder="Project Title"
+                        name='project_title'
+                        value={formData.project_title}
+                        onChange={handleFormChange}/>
                     
                     <div className="flex flex-row justify-between border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700">
                         <label for="dept_id">Department:</label>
@@ -67,26 +105,48 @@ const AddProject = () => {
                             className="w-1/2"
                             onChange={handleFormChange}
                         >
-                            {departments.map((dept, index) => (
-                                <option key={index} value={dept._id}>{dept.name}</option>
-                            ))}
+                            {
+                                id ?
+                                (<option key={formData.dept_id} value={formData.dept_id}>{formData.department}</option>)
+                                :
+                                (departments.map((dept, index) => (
+                                    <option key={index} value={dept._id}>{dept.name}</option>
+                                )))
+                            }
+                            
                         </select>
                     </div>
                           
                     
-                    <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="text" placeholder="Project Manager" name='project_manager' onChange={handleFormChange}/>
+                    <input
+                        className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700"
+                        type="text"
+                        placeholder="Project Manager"
+                        name='project_manager'
+                        value={formData.project_manager}
+                        onChange={handleFormChange}/>
                     <textarea className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700"
                         placeholder="Project Description..."
                         rows={2}
                         cols={25}
+                        value={formData.project_desc}
                         onChange={handleFormChange}/>
                     <div className="flex flex-row justify-between border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700">
                         <label for="start_date">Start Date:</label>
-                        <input className="w-1/2" type="date" name='start_date' onChange={handleFormChange}/>
+                        <input
+                            className="w-1/2"
+                            type="date"
+                            name='start_date'
+                            value={formData.start_date}
+                            onChange={handleFormChange}/>
                     </div>
                     <div className="flex flex-row justify-between border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700">
                         <label for="start_date">End Date:</label>
-                        <input className="w-1/2" type="date" name='end_date' onChange={handleFormChange}/>
+                        <input className="w-1/2"
+                        type="date"
+                        name='end_date'
+                        value={formData.end_date}
+                        onChange={handleFormChange}/>
                     </div>
                     <div className="flex flex-row justify-between border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700">
                         <label for="status">Status:</label>
@@ -94,7 +154,7 @@ const AddProject = () => {
                             name="status" 
                             id="status" 
                             className="w-1/2"
-                            defaultValue="Proposed"
+                            defaultValue={id ? formData.status : "Proposed"}
                             onChange={handleFormChange}
                         >
                             <option value="Proposed">Proposed</option>
@@ -104,7 +164,9 @@ const AddProject = () => {
                             <option value="Completed">Completed</option>
                             <option value="Cancelled">Cancelled</option>
                         </select>
+                        
                     </div>
+                    
                     <button className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4" type="button" onClick={handleSubmit}>Add/Update Project</button>
                     <span><Link to='/projects'>Go Back</Link></span>
                 </form>

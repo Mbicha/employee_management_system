@@ -1,4 +1,4 @@
-const { Mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const Project = require('../models/project');
 
 exports.createProject = async (req, res) => {
@@ -98,6 +98,7 @@ exports.getProjects = async (req, res) => {
             },
             {
                 $project: {
+                    dept_id: { $arrayElemAt: ['$department._id', 0] },
                     project_name: "$project_title",
                     department: { $arrayElemAt: ['$department.name', 0] },
                     status: '$status',
@@ -139,13 +140,12 @@ exports.getProjects = async (req, res) => {
 
 exports.getProjectById = async (req, res) => {
     try {
-        const {id} = new Mongoose.Types.ObjectId(req.params.id)
-        const projects = await Project.aggregate([
+        const project = await Project.aggregate([
             {
                 $match: {
-                    _id: id
+                    _id: new mongoose.Types.ObjectId(req.params.id)
                 }
-            },
+            },         
             {
                 $lookup: {
                     from: 'departments',
@@ -164,10 +164,12 @@ exports.getProjectById = async (req, res) => {
             },
             {
                 $project: {
+                    dept_id: { $arrayElemAt: ['$department._id', 0] },
                     project_name: "$project_title",
                     department: { $arrayElemAt: ['$department.name', 0] },
                     status: '$status',
                     pm: "$project_manager",
+                    start_date: "$start_date",
                     ends_in: "$end_date",
                     percentage_complete: "No data yet",
                     total_tasks: { $size: '$tasks' }                
@@ -175,7 +177,7 @@ exports.getProjectById = async (req, res) => {
             }
         ]);
 
-        if(!projects){
+        if(!project){
             return res.status(404).json({
                 status: 'fail',
                 message: 'No Projects Yet!!'
@@ -184,14 +186,13 @@ exports.getProjectById = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            number_of_projects: projects.length,
-            projects
+            project
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'fail',
             error
         });
     }
 }
-

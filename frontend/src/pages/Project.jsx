@@ -16,10 +16,6 @@ const Project = () => {
         }
         getAllProjects();
     }, []);
-
-    projects.map(project =>
-        console.log(project.project_name)
-    )
     
     return (
         <div>
@@ -41,7 +37,7 @@ const Project = () => {
                 <div className="flex flex-wrap justify-center md:flex-row lg:flex-row max-w-full max-h-full p-4">                
                     {/* Each Department Card */}
                     {projects.map(project => (
-                        <Link key={project._id} to="/" className="flex flex-col w-72 border rounded-lg m-2 shadow-md p-2">
+                        <Link key={project._id} to={`/add-project/${project._id}`} className="flex flex-col w-72 border rounded-lg m-2 shadow-md p-2">
                             <div className="flex flex-row justify-center rounded-md font-semibold border-b-2 border-green-600">
                                 {project.project_name}
                             </div>
