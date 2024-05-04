@@ -92,12 +92,13 @@ exports.getTasks = async (req, res) => {
             },
             {
                 $project: {
+                    project_id: { $arrayElemAt: ['$project._id', 0] },
                     project_title: { $arrayElemAt: ['$project.project_title', 0] },
                     task_title: "$task_title",
                     ends_in: {
                         $concat: [
                             { $toString: "$year" },
-                            "-0",
+                            "-",
                             { $toString: "$month" },
                             "-",
                             { $toString: "$day" }
@@ -120,5 +121,27 @@ exports.getTasks = async (req, res) => {
             status: 'fail',
             error
         });
+    }
+}
+
+exports.getTaskById = async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        if(!task){
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Task Not Found'
+            })
+        }
+
+        res.status(200).json({
+            status: 'status',
+            task
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'status',
+            error
+        })
     }
 }

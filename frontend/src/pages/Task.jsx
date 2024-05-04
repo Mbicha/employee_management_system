@@ -8,7 +8,7 @@ const Task = () => {
     useEffect(() => {
         const getAllTasks = async () => {
             try {
-                const response = await http.get('/tasks/data');
+                const response = await http.get('/tasks/data/tasks');
                 setTasks(response.data.tasks);
             } catch (error) {
                 console.log(error);
@@ -37,7 +37,7 @@ const Task = () => {
                 <div className="flex flex-wrap justify-center md:flex-row lg:flex-row max-w-full max-h-full p-4">                
                     {/* Each Task Card */}
                     {tasks.map(task => (
-                        <Link key={task._id} to="/" className="flex flex-col w-72 border rounded-lg m-2 shadow-md p-2">
+                        <Link key={task._id} to={`/add-task/${task._id}`} className="flex flex-col w-72 border rounded-lg m-2 shadow-md p-2">
                             <div className="flex flex-row justify-center rounded-md font-semibold border-b-2 border-green-600">
                                 {task.task_title}
                             </div>

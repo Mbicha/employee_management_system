@@ -24,6 +24,11 @@ const AddSalary = () => {
             try {
                 if(id) {
                     const response = await http.get(`/salaries/${id}`);
+                    setFormData((prev) => ({
+                        empl_id: null,
+                        salary: response.data.salary.salary,
+                        salary_advance: response.data.salary.salary_advance
+                    }))
                     setSalaryData(response.data.salary)
                 }
                 
@@ -64,8 +69,12 @@ const AddSalary = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        try {            
-            await http.post('/salaries', formData);
+        try {
+            if(id) {
+                await http.post('/salaries', formData);
+            } else {
+                await http.patch(`/salaries/${id}`, formData)
+            }            
             navigate('/salaries');
         } catch (error) {
             console.log(error);
@@ -98,8 +107,19 @@ const AddSalary = () => {
                         </select>
                     </div>
 
-                    <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="text" placeholder="Enter Salary" name="salary" value={salaryData.salary || ''} onChange={handleFormChange}/>
-                    <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="text" placeholder="Enter Salary Advance (Optional)" value={salaryData.salary_advance || ''} name="salary_advance" onChange={handleFormChange}/>
+                    <input
+                        className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700"
+                        type="text"
+                        placeholder="Enter Salary"
+                        name="salary" value={formData.salary}
+                        onChange={handleFormChange}/>
+                    <input
+                        className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700"
+                        type="text"
+                        placeholder="Enter Salary Advance (Optional)"
+                        value={formData.salary_advance}
+                        name="salary_advance" 
+                        onChange={handleFormChange}/>
                     <button 
                         className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
                         type="button"

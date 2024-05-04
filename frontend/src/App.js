@@ -101,6 +101,10 @@ const router = createBrowserRouter([
         element: <AddTask/>
       },
       {
+        path: "/add-task/:id",
+        element: <AddTask/>
+      },
+      {
         path: "/add-employee",
         element: <AddEmployee/>
       },
