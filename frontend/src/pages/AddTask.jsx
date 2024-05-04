@@ -89,6 +89,15 @@ const AddTask = () => {
         getTask()
     }, [])
 
+    const handleDelete = async () => {
+        try {
+            await http.delete(`/tasks/${id}`);
+            navigate('/tasks');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -192,13 +201,31 @@ const AddTask = () => {
                             ))}
                         </select>
                     </div>  
-
-                    <button
-                        className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
-                        type="button"
-                        onClick={handleSubmit}>
-                            {handleButtonText}
-                    </button>
+                    
+                    {
+                        id ? 
+                        <div className="flex flex-row justify-between w-4/5">
+                            <button
+                                className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 mr-1 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                                type="button"
+                                onClick={handleDelete}>
+                                    Delete Task
+                            </button>
+                            <button
+                                className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                                type="button"
+                                onClick={handleSubmit}>
+                                    {handleButtonText}
+                            </button>
+                        </div> :
+                        <button
+                            className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                            type="button"
+                            onClick={handleSubmit}>
+                                {handleButtonText}
+                        </button>
+                    }      
+                    
                     <span><Link to='/tasks'>Go Back</Link></span>
                 </form>
             </div>
