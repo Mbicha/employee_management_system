@@ -36,11 +36,10 @@ exports.updateProject = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            data: {
-                updateProject
-            }
+            updateProject
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'fail',
             error
@@ -166,6 +165,7 @@ exports.getProjectById = async (req, res) => {
                 $project: {
                     dept_id: { $arrayElemAt: ['$department._id', 0] },
                     project_name: "$project_title",
+                    project_desc: "$project_desc",
                     department: { $arrayElemAt: ['$department.name', 0] },
                     status: '$status',
                     pm: "$project_manager",

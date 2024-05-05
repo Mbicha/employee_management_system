@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Task = require('./task');
 
 const Schema = mongoose.Schema;
 const projectSchema = new Schema({
@@ -25,6 +26,19 @@ const projectSchema = new Schema({
     },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
+});
+
+// Middleware to delete related documents
+projectSchema.pre('findOneAndDelete', async function(next) {
+    const project = this;
+    try {
+        // Delete documents from other collections that reference project_id
+        await Task.deleteMany({ project_id: project._id });
+        // Add more deleteMany statements for other collections if needed
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = mongoose.model('Project', projectSchema);

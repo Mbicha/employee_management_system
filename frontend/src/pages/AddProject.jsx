@@ -45,18 +45,17 @@ const AddProject = () => {
                     const response = await http.get(`/project/data/project/${id}`)
                     const project = response.data.project;
 
-                    const resData = project.map(proj => proj)
-
+                    const resData = project[0];
                     setFormData((prev) => ({
                         ...prev,
-                        dept_id: project.map(proj => proj._id),
-                        project_title: project.map(proj => proj.project_name),
-                        project_desc: project.map(proj => proj.project_desc),
-                        project_manager: project.map(proj => proj.pm),
-                        start_date: formatDate(project.map(proj => proj.start_date)),
-                        end_date: formatDate(project.map(proj => proj.ends_in)),
-                        status: project.map(proj => proj.status),
-                        department: project.map(proj => proj.department)
+                        dept_id: project[0].dept_id,
+                        project_title: project[0].project_name,
+                        project_desc: project[0].project_desc,
+                        project_manager: project[0].pm,
+                        start_date: formatDate(project[0].start_date),
+                        end_date: formatDate(project[0].ends_in),
+                        status: project[0].status,
+                        department: project[0].department
                     }))
                     setProjectData(resData)
                 }
@@ -71,11 +70,23 @@ const AddProject = () => {
         event.preventDefault();
         try {
             if(id){
-                await http.post(`/project/${id}`, formData);
+                await http.patch(`/project/${id}`, formData);
             } else {
                 await http.post('/project', formData);
             }
             navigate('/projects');            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        try {
+            if(id){
+                await http.delete(`/project/${id}`);
+            }
+            navigate('/projects');           
         } catch (error) {
             console.log(error);
         }
@@ -106,7 +117,7 @@ const AddProject = () => {
                             onChange={handleFormChange}
                         >
                             {
-                                id ?
+                                id && formData.dept_id ?
                                 (<option key={formData.dept_id} value={formData.dept_id}>{formData.department}</option>)
                                 :
                                 (departments.map((dept, index) => (
@@ -154,7 +165,7 @@ const AddProject = () => {
                             name="status" 
                             id="status" 
                             className="w-1/2"
-                            defaultValue={id ? formData.status : "Proposed"}
+                            value={formData.status}
                             onChange={handleFormChange}
                         >
                             <option value="Proposed">Proposed</option>
@@ -166,8 +177,30 @@ const AddProject = () => {
                         </select>
                         
                     </div>
-                    
-                    <button className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4" type="button" onClick={handleSubmit}>Add/Update Project</button>
+                    {
+                        id ?
+                        <div className="flex flex-row justify-between w-4/5">
+                            <button
+                                className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 mr-1 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                                type="button"
+                                onClick={handleDelete}>
+                                    Delete Project
+                            </button>
+                            <button
+                                className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                                type="button"
+                                onClick={handleSubmit}>
+                                    Update Project
+                            </button>
+                        </div>
+                        :
+                        <button 
+                            className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                            type="button"
+                            onClick={handleSubmit}>
+                            Save Project
+                        </button>
+                    }
                     <span><Link to='/projects'>Go Back</Link></span>
                 </form>
             </div>
