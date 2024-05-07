@@ -184,13 +184,13 @@ const AddProject = () => {
                                 className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 mr-1 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
                                 type="button"
                                 onClick={handleDelete}>
-                                    Delete Project
+                                    Delete
                             </button>
                             <button
                                 className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
                                 type="button"
                                 onClick={handleSubmit}>
-                                    Update Project
+                                    Update
                             </button>
                         </div>
                         :
@@ -198,7 +198,7 @@ const AddProject = () => {
                             className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
                             type="button"
                             onClick={handleSubmit}>
-                            Save Project
+                            Save
                         </button>
                     }
                     <span><Link to='/projects'>Go Back</Link></span>

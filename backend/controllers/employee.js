@@ -68,9 +68,10 @@ exports.getEmployeeByUserId = async (req, res) => {
         
         res.status(200).json({
             status: 'success',
-            employee: employee
+            employee
         })
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: 'error',
             message: 'No Data Available',

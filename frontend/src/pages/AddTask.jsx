@@ -116,7 +116,7 @@ const AddTask = () => {
     }
 
     const handleHeadText = id ? "Edit Task" : "Add Task"
-    const handleButtonText = id ? "Update Task" : "Save Task"
+    const handleButtonText = id ? "Update" : "Save"
 
     return (
         <div>
@@ -211,7 +211,7 @@ const AddTask = () => {
                                 className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 mr-1 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
                                 type="button"
                                 onClick={handleDelete}>
-                                    Delete Task
+                                    Delete
                             </button>
                             <button
                                 className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
