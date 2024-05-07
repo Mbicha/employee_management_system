@@ -78,8 +78,8 @@ const DepartmentData = () => {
                                         (
                                             <div className="flex flex-col border-t-2 border-green-800 p-2">
                                                 <Link to={`/add-department/${id}`} className="underline">Update Department</Link>
-                                                <Link className="underline">Create Project</Link>
-                                                <Link className="underline">Create Task</Link>
+                                                <Link to={`/add-project`} className="underline">Create Project</Link>
+                                                <Link to={`/add-task`} className="underline">Create Task</Link>
                                             </div>
                                         )
                                         :

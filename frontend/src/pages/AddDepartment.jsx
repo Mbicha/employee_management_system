@@ -3,13 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import http from "../http-common";
 
 const AddDepartment = () => {
-    const navigate = useNavigate();
     const {id} = useParams()
+    const navigate = useNavigate();    
+    const [fullNames, setFullNames] = useState([]);
+    const [filteredNames, setFilteredNames] = useState([]);
+    
     const [formData, setFormData] = useState({
         name: "", head_of_department: ""
     });
-    const [fullNames, setFullNames] = useState([]);
-    const [filteredNames, setFilteredNames] = useState([]);
 
     const handleFormChange = (event) => {
         setFormData(prev => ({
@@ -32,10 +33,8 @@ const AddDepartment = () => {
         try {
             if (id) {
                 await http.patch(`/departments/${id}`, formData)
-                console.log("Updated");
             } else {
                 await http.post('/departments', formData);
-                console.log("Saved");
             }            
             navigate('/departments');
         } catch (error) {
