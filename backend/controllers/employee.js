@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const Employee = require('../models/employee')
 
 exports.createEmployee = async (req, res) => {
@@ -47,7 +48,47 @@ exports.getAllEmployees = async (req, res) => {
 
 exports.getEmployeeById = async (req, res) => {
     try {
-        const employee = await Employee.findById(req.params.id)
+        // const employee = await Employee.findById(req.params.id)
+        const employee = await Employee.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(req.params.id)
+                }                
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: "user_id",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $lookup: {
+                    from: 'designations',
+                    localField: "job_id",
+                    foreignField: "_id",
+                    as: "designation"
+                }
+            },
+            {
+                $project: {
+                    user_id: 1,
+                    job_id: 1,
+                    role: 1,
+                    employment_type: 1,
+                    contract_length: 1,
+                    full_name:{
+                        $concat: [
+                            {$arrayElemAt: ["$user.first_name", 0] },
+                            " ",
+                            {$arrayElemAt: ["$user.last_name", 0] }
+                        ]
+                    },
+                    designation: { $arrayElemAt: ["$designation.job_title", 0] },
+                }
+            }
+        ])
         
         res.status(200).json({
             status: 'success',
