@@ -26,6 +26,7 @@ import Profile from './pages/Profile';
 import DepartmentData from './pages/DepartmentData';
 import Salaries from './pages/Salaries';
 import AddSalary from './pages/AddSalary';
+import EditPersonalData from './pages/EditPersonalData';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -135,6 +136,10 @@ const router = createBrowserRouter([
       {
         path: "/add-salary/:id",
         element: <AddSalary/>
+      },
+      {
+        path: "/edit-personal-data/:id",
+        element: <EditPersonalData/>
       }
     ]
   }

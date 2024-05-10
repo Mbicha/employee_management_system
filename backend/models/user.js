@@ -21,7 +21,7 @@ const userSchema = new Schema({
     },
     marital_status: {
         type: String,
-        enum: ['Married', 'Single', 'Separated', 'Divorsed', 'Come we stay']
+        enum: ['Married', 'Single', 'Separated', 'Divorced', 'Come we stay']
     },
     date_of_birth: {
         type: Date
@@ -34,12 +34,13 @@ const userSchema = new Schema({
     },
     next_of_kin_relationship: {
         type: String,
-        enum: ['Spouce', 'Mother', 'Father','Son', 'Doughter', 'Relative', 'Dating','Prefer not say']
+        enum: ['Spouse', 'Mother', 'Father','Son', 'Doughter', 'Relative', 'Dating','Prefer not say']
     },
     health_condition: {
         type: String,
         enum: ['Yes', 'No']
     },
+    
     what_condition: {
         type: String
     },

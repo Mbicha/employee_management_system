@@ -116,7 +116,7 @@ const Profile = () => {
                                 <div>
                                     {checkTime()}! {profile.first_name} {profile.last_name}
                                 </div>
-                                <Link className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
+                                <Link to={`/edit-personal-data/${id}`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
                                     Update
                                 </Link>
                             </div>
