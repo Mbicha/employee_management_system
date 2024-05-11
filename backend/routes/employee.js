@@ -11,4 +11,5 @@ router.get('/data/employee/:id', Employee.getEmployeeByUserId);
 router.get('/data/employee-salaries', Employee.getEmployeeSalaries);
 router.delete('/:id', Employee.deleteEmployee);
 
+
 module.exports = router;

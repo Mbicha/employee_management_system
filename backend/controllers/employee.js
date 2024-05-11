@@ -48,7 +48,6 @@ exports.getAllEmployees = async (req, res) => {
 
 exports.getEmployeeById = async (req, res) => {
     try {
-        // const employee = await Employee.findById(req.params.id)
         const employee = await Employee.aggregate([
             {
                 $match: {
@@ -72,6 +71,14 @@ exports.getEmployeeById = async (req, res) => {
                 }
             },
             {
+                $lookup: {
+                    from: "departments",
+                    localField: "dept_id",
+                    foreignField: "departments._id",
+                    as: "department"
+                }
+            },
+            {
                 $project: {
                     user_id: 1,
                     job_id: 1,
@@ -86,6 +93,8 @@ exports.getEmployeeById = async (req, res) => {
                         ]
                     },
                     designation: { $arrayElemAt: ["$designation.job_title", 0] },
+                    department: { $arrayElemAt: ["$department.name", 0] },
+                    head_of_department: { $arrayElemAt: ["$department.head_of_department", 0] }
                 }
             }
         ])
@@ -105,7 +114,65 @@ exports.getEmployeeById = async (req, res) => {
 
 exports.getEmployeeByUserId = async (req, res) => {
     try {
-        const employee = await Employee.find({user_id: req.params.id})
+        const employee = await Employee.aggregate([
+            {
+                $match: {
+                    user_id: new mongoose.Types.ObjectId(req.params.id)
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "user_id",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $lookup: {
+                    from: "designations",
+                    localField: "job_id",
+                    foreignField: "_id",
+                    as: "designation"
+                }
+            },
+            {
+                $lookup: {
+                    from: "departments",
+                    localField: "designations.dept_id",
+                    foreignField: "departments._id",
+                    as: "department"
+                }
+            },           
+            {
+                $project: {
+                    user_id: 1,
+                    role: 1,
+                    employment_type: 1,
+                    contract_length: 1,
+                    dob: {$arrayElemAt: ["$user.date_of_birth", 0]},
+                    full_name: {
+                        $concat: [
+                            { $arrayElemAt: ["$user.first_name",0] },
+                            " ",
+                            { $arrayElemAt: ["$user.last_name",0] }
+                        ]
+                    },
+                    profile_photo: { $arrayElemAt: ["$user.profile",0] },
+                    phone: { $arrayElemAt: ["$user.phone",0] },
+                    email: { $arrayElemAt: ["$user.email",0]},
+                    gender: { $arrayElemAt: ["$user.gender",0] },
+                    health_condition: { $arrayElemAt: ["$user.health_condition",0]},
+                    marital_status: { $arrayElemAt: ["$user.marital_status",0] },
+                    next_of_kin: { $arrayElemAt: ["$user.next_of_kin",0]},
+                    next_of_kin_contact: { $arrayElemAt: ["$user.next_of_kin_contact",0] },
+                    next_of_kin_relationshipjob_title: { $arrayElemAt: ["$user.next_of_kin_relationship",0]},
+                    designation: { $arrayElemAt: ["$designation.job_title",0] },
+                    department: { $arrayElemAt: ["$department.name",0] },
+                    head_of_department: { $arrayElemAt: ["$department.head_of_department",0] }
+                }
+            }
+        ])
         
         res.status(200).json({
             status: 'success',
@@ -116,7 +183,7 @@ exports.getEmployeeByUserId = async (req, res) => {
         res.status(500).json({
             status: 'error',
             message: 'No Data Available',
-            error: error.message // Send error message to client
+            error: error.message
         });
     }
 }

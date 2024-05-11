@@ -88,20 +88,24 @@ const Profile = () => {
             {<section className="flex flex-col w-full md:flex-row lg:flex-row">
                         <div className="flex flex-col w-full border-r-2 border-green-600 md:w-1/4 lg:1/4 md:h-screen lg:h-screen">
                             <div className="flex flex-col w-full h-3/4 shadow-md">
+                                {/* {
+                                    employee.map(empl => (
+                                        
+                                    ))
+                                } */}
                                 <div className="flex flex-col">
                                     <h2 className="h-4 m-2">
                                         <span className="font-bold">
                                             Department:
                                         </span>
-                                        Info
+                                        {employee[0].department}
                                     </h2>
                                     <h2 className="h-4 m-2">
                                         <span className="font-bold">
                                             Head of Department:
                                         </span>
-
-                                        Head
-                                        </h2>
+                                        {employee[0].head_of_department}
+                                    </h2>
                                     <h2 className="h-4 m-2">
                                         <span className="font-bold">
                                             No. of Employees:
