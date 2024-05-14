@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import profile from "../media/images/profile.png";
 import http from "../http-common";
 
 import NoticeBoard from "../components/NoticeBoard";
@@ -35,7 +36,8 @@ const Profile = () => {
                 if((response.data.status === "fail") || (employee.length <= 0)){
                     console.log("No data");
                 }
-                setEmployee(response.data.employee)
+                // console.log(response.data.employee[0]);
+                setEmployee(response.data.employee[0])
             } catch (error) {
                 console.log(error);
             }
@@ -83,42 +85,73 @@ const Profile = () => {
         }
     }
 
+    const isAdminDirectorHeadOfDepartment = (employee) => {
+        if(employee.role === "Admin" || employee.role === "Director" || employee.head_of_department === employee.full_name) {
+            return true
+        }
+    }
+
+    const isAdminDirectorHr = (employee) => {
+        if(employee.role === "Admin" || employee.role === "Director" || employee.job_title === "Human Resource") {
+            return true
+        }
+    }
+
     return(
         <>
             {<section className="flex flex-col w-full md:flex-row lg:flex-row">
-                        <div className="flex flex-col w-full border-r-2 border-green-600 md:w-1/4 lg:1/4 md:h-screen lg:h-screen">
+                        <div className="flex flex-col w-full border-r-2 border-green-600 p-2 md:w-1/4 lg:1/4 md:h-screen lg:h-screen">
                             <div className="flex flex-col w-full h-3/4 shadow-md">
-                                {/* {
-                                    employee.map(empl => (
-                                        
-                                    ))
-                                } */}
-                                <div className="flex flex-col">
-                                    <h2 className="h-4 m-2">
-                                        <span className="font-bold">
-                                            Department:
-                                        </span>
-                                        {employee[0].department}
-                                    </h2>
-                                    <h2 className="h-4 m-2">
-                                        <span className="font-bold">
-                                            Head of Department:
-                                        </span>
-                                        {employee[0].head_of_department}
-                                    </h2>
-                                    <h2 className="h-4 m-2">
-                                        <span className="font-bold">
-                                            No. of Employees:
-                                        </span>
-                                        8
-                                    </h2>                            
-                                </div>              
-                            </div>
+                                <div className="flex flex-col items-center pb-4 pt-4">
+                                    <img 
+                                        src={profile}
+                                        className="border rounded-full h-28 p-2"                                        
+                                        alt="Profile Picture"/>                                                     
+                                </div>
+
+                                {/* Admin, Director, Head of Department */}
+                                <div className="flex flex-col border-t-2 border-green-800 p-2">
+                                    {
+                                        isAdminDirectorHeadOfDepartment(employee) ?
+                                        (
+                                            <>
+                                                <Link to={`/add-project`} className="underline">
+                                                    Create Project
+                                                </Link>
+                                                <Link to={`/add-task`} className="underline">
+                                                    Create Task
+                                                </Link>
+                                            </>                            
+                                        )
+                                        : isAdminDirectorHr(employee) ?
+                                        (
+                                            <>
+                                                <Link to={`/add-employee`} className="underline">
+                                                    Add Employee
+                                                </Link>
+                                                <Link to={`/add-salary`} className="underline">
+                                                    Add Salary
+                                                </Link>
+                                                <Link className="underline">
+                                                    Requested Salary Advance
+                                                </Link>
+                                            </>
+                                        ): (
+                                            <></>
+                                        )
+                                    }
+                                </div>
+                                
+                                <div className="flex flex-col border-t-2 border-green-800 p-2">
+                                    <Link className="underline">Apply Salary Advance</Link>
+                                    <Link className="underline">Logout</Link> 
+                                </div>                                       
+                            </div>                            
                         </div>
                         <div className="flex flex-col w-full md:w-1/2 lg:1/2 md:h-screen lg:h-screen m-1">
                             <div className="flex flex-row justify-between border-b-2 border-green-800 shadow-md p-1 mb-2">
                                 <div>
-                                    {checkTime()}! {profile.first_name} {profile.last_name}
+                                    {checkTime()}! {employee.full_name}
                                 </div>
                                 <Link to={`/edit-personal-data/${id}`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
                                     Update
@@ -132,25 +165,25 @@ const Profile = () => {
                                         <span className="font-semibold text-green-800">
                                             Gender:  
                                         </span>
-                                        {profile.gender}
+                                        {employee.gender}
                                     </li>
                                     <li>
                                         <span className="font-semibold text-green-800">
                                             DOB:  
                                         </span>
-                                        {profile.date_of_birth}
+                                        {employee.dob}
                                     </li>
                                     <li>
                                         <span className="font-semibold text-green-800">
                                             Marital Status:
                                         </span>
-                                        {profile.marital_status}
+                                        {employee.marital_status}
                                     </li>
                                     <li>
                                         <span className="font-semibold text-green-800">
                                             Health Condition:
                                         </span>
-                                        {profile.health_condition}
+                                        {employee.health_condition}
                                     </li>                                        
                                 </ul>
                             </div>
@@ -162,19 +195,19 @@ const Profile = () => {
                                         <span className="font-semibold text-green-800">
                                             Name:  
                                         </span>
-                                        {profile.next_of_kin}
+                                        {employee.next_of_kin}
                                     </li>
                                     <li>
                                         <span className="font-semibold text-green-800">
                                             Relationship:  
                                         </span>
-                                        {profile.next_of_kin_relationship}
+                                        {employee.next_of_kin_relationship}
                                     </li>
                                     <li>
                                         <span className="font-semibold text-green-800">
                                             Phone:
                                         </span>
-                                        {profile.next_of_kin_contact}
+                                        {employee.next_of_kin_contact}
                                     </li>
                                     
                                 </ul>
@@ -183,22 +216,20 @@ const Profile = () => {
                             <div className="shadow-md rounded-md p-2">
                                 <h1 className="sub-header">Employment Details</h1>
                                 <hr />
-                                {employee.map(emplo =>(
-                                    <ul key={emplo._id} className="flex flex-col max-h-28 overflow-y-auto">
+                                <ul key={employee._id} className="flex flex-col max-h-28 overflow-y-auto">
                                         <li>
                                             <span className="font-semibold text-green-800">
                                                 Employment Type:  
                                             </span>
-                                            {emplo.employment_type}
+                                            {employee.employment_type}
                                         </li>
                                         <li>
                                             <span className="font-semibold text-green-800">
                                                 Contract Length:  
                                             </span>
-                                            {emplo.contract_length} Years
+                                            {employee.contract_length} Years
                                         </li>
                                     </ul>
-                                ))}
                             </div>
                             {location.map(loc =>(
                                 <div className="shadow-md rounded-md p-2">                                

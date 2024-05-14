@@ -62,9 +62,9 @@ const EditPersonalData = () => {
     const handleSubmit = async (event) => {
         try {
             if(id){
-                await http.patch(`/users/data/${id}`, formData);
-                navigate(`/profile/${id}`)
+                await http.patch(`/users/data/${id}`, formData);                
             }
+            navigate(`/profile/${id}`)
         } catch (error) {
             console.log(error);
         }
