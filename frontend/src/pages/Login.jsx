@@ -4,6 +4,8 @@ import http from "../http-common";
 
 const Login = () => {
     const navigate = useNavigate();
+    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const [formData, setFormData] = useState({
         email: "", password: ""
@@ -24,15 +26,14 @@ const Login = () => {
             
             if (response.status === 200) {
                 const id = response.data.existing_user._id
-                // Save the token to the local storage
                 localStorage.setItem('token', id);
+                setIsSuccess(true)
                 navigate(`/profile/${id}`);
             } else {
-                console.log("Invalid Credentials");
-            }         
-            
+                setDialogOpen(true);                
+            }            
         } catch (error) {
-            console.log(error);
+            setDialogOpen(true);
         }
     }
 
@@ -50,6 +51,7 @@ const Login = () => {
                     <span>No account? <Link to='/account'>Register</Link></span>
                 </form>
             </div>
+            
         </div>
     )
 }

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import http from "../http-common";
+import Dialog from "../components/Dialog";
 
 const Account = () => {
     const navigate = useNavigate();
+    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    
     const [formData, setFormData] = useState({
         first_name: "", last_name: "", email: "", phone: "", password: "", confirm_password: ""
     });
@@ -14,17 +18,22 @@ const Account = () => {
             [event.target.name]: event.target.value
         }));
     }
+
+    const handleConfirm = () => {
+        setDialogOpen(false);
+    };
     
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setDialogOpen(true)
         try {            
             await http.post('/user/register', formData);
-            console.log("Saved");
-            event.target.reset();
-            navigate('/login');
-        } catch (error) {
-            console.log(error);
+            setIsSuccess(true);
+            if(!isDialogOpen) {
+                navigate('/login');
+            }            
+        } catch (error) {            
+            setIsSuccess(false);
         }
     }
 
@@ -46,10 +55,26 @@ const Account = () => {
 
                     <input className="border-b-2 border-gray-400 w-4/5 p-2 mb-4 focus:outline-none focus:border-green-700" type="password" placeholder="Confirm Password" name='confirm_password' onChange={handleFormChange}/>
 
-                    <button className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4" type="button" onClick={handleSubmit}>Register</button>
+                    <button
+                        className="bg-green-700 hover:bg-green-600 text-white font-bold p-2 rounded focus:outline-none focus:shadow-outline w-4/5 mb-4"
+                        type="button"
+                        onClick={handleSubmit}>
+                            Register
+                    </button>
                     <span>Already have an account? <Link to='/login'>Login</Link></span>
                 </form>
             </div>
+            {/* Dialog component */}
+            {
+                <Dialog 
+                    isOpen={isDialogOpen}
+                    title={isSuccess ? "Success" : "Error"}
+                    message={isSuccess ? "Account Created Successfully" : "There was an Error"}
+                    imageSrc={isSuccess ? "/media/gif/success.gif" : "/media/gif/fail.gif"}
+                    onConfirm={handleConfirm}
+                />
+            }
+            
         </div>
     )
 }

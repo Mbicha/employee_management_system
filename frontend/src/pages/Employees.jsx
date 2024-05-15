@@ -36,13 +36,16 @@ const Employees = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-wrap w-full items-left justify-center border rounded-lg'>
+                <div className='flex flex-wrap w-full items-left justify-center'>
                     {/* Start of Employee card */}
                     {employees.map(employee => 
                         <div key={employee._id} className='flex flex-col border rounded-lg mr-1 mb-1 w-full sm:w-1/2 md:w-1/4 lg:w-1/4'>
                             {/* Profile photo */}
                             <div className='flex justify-center items-center p-4 m-2'>
-                                <img src="" alt="Profile" srcset="" className='w-24 h-24 border border-black p-2 rounded-full'/>
+                                <img
+                                    src="/media/images/profile.png"
+                                    alt="Profile"
+                                    className='w-24 h-24 border rounded-full'/>
                             </div>
 
                             {/* Other Details */}
@@ -61,7 +64,11 @@ const Employees = () => {
                                 </h2>
                                 <hr></hr>
                                 <div className='flex justify-end'>
-                                    <Link to={`/add-employee/${employee._id}`} className='bg-green-800 w-24 rounded-lg text-white p-2 mt-1'>View</Link>
+                                    <Link
+                                        to={`/add-employee/${employee._id}`}
+                                        className='flex justify-center bg-green-800 w-24 rounded-lg text-white p-2 mt-1'>
+                                            View
+                                        </Link>
                                 </div>
                             </div>
                         </div>

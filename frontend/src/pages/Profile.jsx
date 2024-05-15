@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import profile from "../media/images/profile.png";
 import http from "../http-common";
 
 import NoticeBoard from "../components/NoticeBoard";
@@ -102,15 +101,18 @@ const Profile = () => {
             {<section className="flex flex-col w-full md:flex-row lg:flex-row">
                         <div className="flex flex-col w-full border-r-2 border-green-600 p-2 md:w-1/4 lg:1/4 md:h-screen lg:h-screen">
                             <div className="flex flex-col w-full h-3/4 shadow-md">
-                                <div className="flex flex-col items-center pb-4 pt-4">
+                                <div className="flex flex-col items-center pb-2 pt-4">
                                     <img 
-                                        src={profile}
-                                        className="border rounded-full h-28 p-2"                                        
-                                        alt="Profile Picture"/>                                                     
+                                        src="/media/images/profile.png"
+                                        className="border rounded-full h-28"                                        
+                                        alt="Profile Picture"/>                                              
                                 </div>
+                                <div className="flex flex-col border-t-2 border-green-800 rounded-md p-2 mt-4">
+                                    <span className="font-thin">{ employee.full_name }</span>
+                                </div>   
 
                                 {/* Admin, Director, Head of Department */}
-                                <div className="flex flex-col border-t-2 border-green-800 p-2">
+                                <div className="flex flex-col border-t-2 border-green-800 rounded-md p-2">
                                     {
                                         isAdminDirectorHeadOfDepartment(employee) ?
                                         (
@@ -142,7 +144,7 @@ const Profile = () => {
                                     }
                                 </div>
                                 
-                                <div className="flex flex-col border-t-2 border-green-800 p-2">
+                                <div className="flex flex-col border-t-2 border-green-800 rounded-md p-2">
                                     <Link className="underline">Apply Salary Advance</Link>
                                     <Link className="underline">Logout</Link> 
                                 </div>                                       
