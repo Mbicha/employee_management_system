@@ -143,7 +143,15 @@ exports.getEmployeeByUserId = async (req, res) => {
                     foreignField: "departments._id",
                     as: "department"
                 }
-            },           
+            },
+            {
+                $lookup: {
+                    from: "salaries",
+                    localField: "_id",
+                    foreignField: "empl_id",
+                    as: "salary"
+                }
+            },       
             {
                 $project: {
                     user_id: 1,
@@ -169,7 +177,10 @@ exports.getEmployeeByUserId = async (req, res) => {
                     next_of_kin_relationshipjob_title: { $arrayElemAt: ["$user.next_of_kin_relationship",0]},
                     designation: { $arrayElemAt: ["$designation.job_title",0] },
                     department: { $arrayElemAt: ["$department.name",0] },
-                    head_of_department: { $arrayElemAt: ["$department.head_of_department",0] }
+                    head_of_department: { $arrayElemAt: ["$department.head_of_department",0] },
+                    salary_id: { $arrayElemAt: ["$salary._id", 0] },
+                    salary_advance: { $arrayElemAt: ["$salary.salary_advance", 0] },
+                    advance_status: { $arrayElemAt: ["$salary.advance_status", 0] }
                 }
             }
         ])

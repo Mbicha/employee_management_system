@@ -27,6 +27,7 @@ import DepartmentData from './pages/DepartmentData';
 import Salaries from './pages/Salaries';
 import AddSalary from './pages/AddSalary';
 import EditPersonalData from './pages/EditPersonalData';
+import RequestSalaryAdvance from './pages/RequestSalaryAdvance';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-personal-data/:id",
         element: <EditPersonalData/>
+      },
+      {
+        path: "/apply-advance/:id",
+        element: <RequestSalaryAdvance/>
       }
     ]
   }

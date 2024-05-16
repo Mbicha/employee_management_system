@@ -35,14 +35,13 @@ const Profile = () => {
                 if((response.data.status === "fail") || (employee.length <= 0)){
                     console.log("No data");
                 }
-                // console.log(response.data.employee[0]);
                 setEmployee(response.data.employee[0])
             } catch (error) {
                 console.log(error);
             }
         }
         getEmployee()
-    },[])
+    },[employee.length, id])
 
     useEffect(() =>{
         const getProfile = async () => {
@@ -55,7 +54,7 @@ const Profile = () => {
         }
 
         getProfile()
-    },[])
+    },[id])
 
     useEffect(() => {
         const getLocation = async () => {
@@ -70,7 +69,7 @@ const Profile = () => {
            }
         }
         getLocation()
-    },[])
+    },[id])
 
     const checkTime = () =>{
         if(hours > 0 && hours < 12) {
@@ -90,10 +89,14 @@ const Profile = () => {
         }
     }
 
-    const isAdminDirectorHr = (employee) => {
-        if(employee.role === "Admin" || employee.role === "Director" || employee.job_title === "Human Resource") {
+    const isAdminHr = (employee) => {
+        if(employee.role === "Admin" || employee.designation === "Human Resource") {
             return true
         }
+    }
+
+    const isLocationAvailable = (location) => {
+        return location.length > 0
     }
 
     return(
@@ -125,7 +128,7 @@ const Profile = () => {
                                                 </Link>
                                             </>                            
                                         )
-                                        : isAdminDirectorHr(employee) ?
+                                        : isAdminHr(employee) ?
                                         (
                                             <>
                                                 <Link to={`/add-employee`} className="underline">
@@ -145,8 +148,17 @@ const Profile = () => {
                                 </div>
                                 
                                 <div className="flex flex-col border-t-2 border-green-800 rounded-md p-2">
-                                    <Link className="underline">Apply Salary Advance</Link>
-                                    <Link className="underline">Logout</Link> 
+                                    {
+                                        !isLocationAvailable(location) && (
+                                            <Link to={`/add-location`} className="underline">Add Location</Link>
+                                        )
+                                    }
+                                    {
+                                        employee.salary_id && (
+                                            <Link to={`/apply-advance/${employee.salary_id}`} className="underline">Apply Salary Advance</Link>
+                                        )
+                                    }  
+                                    <Link className="underline">Logout</Link>
                                 </div>                                       
                             </div>                            
                         </div>
@@ -238,10 +250,7 @@ const Profile = () => {
                                     <div className="flex flex-row justify-between">
                                         <h1 className="sub-header">Location</h1>
                                         <hr />
-                                        <div className="flex flex-row ml-2">
-                                            <Link to={`/add-location`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
-                                                Add
-                                            </Link>               
+                                        <div className="flex flex-row ml-2">             
                                             <Link to={`/add-location/${loc._id}`} className="flex bg-green-800 mr-2 rounded-md text-white font-serif p-1">
                                                 Update
                                             </Link>
@@ -263,7 +272,23 @@ const Profile = () => {
                                         </ul>
                                     
                                 </div>
-                            ))}  
+                            ))}
+                            {
+                                employee.salary_advance > 0 && (
+                                    <div className="shadow-md rounded-md p-2">
+                                        <h1 className="sub-header">Salary Advance</h1>
+                                        <hr />
+                                        <ul key={employee._id} className="flex flex-col max-h-28 overflow-y-auto">
+                                                <li>
+                                                    <span className="font-semibold text-green-800">
+                                                        Status:  
+                                                    </span>
+                                                    {employee.advance_status}
+                                                </li>
+                                            </ul>
+                                    </div>
+                                )
+                            }                           
                             
                         </div>
                         <div className="flex flex-col w-full scrollable md:w-1/4 lg:1/4 md:h-screen lg:h-screen">
