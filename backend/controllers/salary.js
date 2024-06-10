@@ -86,6 +86,46 @@ exports.updateSalary = async (req, res) => {
     }
 }
 
+exports.updateSalaryAdvanceStatus = async (req, res) => {
+    try {
+        const { advance_status } = req.body;
+
+        if (!advance_status) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Advance status is required'
+            });
+        }
+
+        // Find the employee's salary document and update only the advance_status field
+        const salary = await Salary.findOneAndUpdate(
+            { _id: req.params.id },
+            { advance_status },
+            { new: true, runValidators: true }
+        );
+
+        if (!salary) {
+            return res.status(404).json({
+                status: 'fail',
+                message: "No salary record found for the employee with such id"
+            });
+        }
+        
+        res.status(200).json({
+            status: 'success',
+            data: {
+                salary
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+            error: error.message
+        });
+    }
+};
+
 exports.deleteSalary = async (req, res) => {
     try {
         const salary = await Salary.findByIdAndDelete(req.params.id);

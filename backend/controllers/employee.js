@@ -406,6 +406,7 @@ exports.getEmployeeSalaries = async (req, res) => {
                             "$remaining_salary"
                         ]
                     },
+                    status: {  $arrayElemAt : ["$salary.advance_status", 0] }
                 }
             },
             {

@@ -137,8 +137,8 @@ const Profile = () => {
                                                 <Link to={`/add-salary`} className="underline">
                                                     Add Salary
                                                 </Link>
-                                                <Link className="underline">
-                                                    Requested Salary Advance
+                                                <Link to={`/approve-salary-advance`} className="underline">
+                                                    Approve Salary Advance
                                                 </Link>
                                             </>
                                         ): (

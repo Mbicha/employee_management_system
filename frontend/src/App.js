@@ -28,6 +28,7 @@ import Salaries from './pages/Salaries';
 import AddSalary from './pages/AddSalary';
 import EditPersonalData from './pages/EditPersonalData';
 import RequestSalaryAdvance from './pages/RequestSalaryAdvance';
+import ApproveSalaryAdvance from './pages/ApproveSalaryAdvance';
 
 // Import Components
 import NavBar from "./components/NavBar";
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
       {
         path: "/apply-advance/:id",
         element: <RequestSalaryAdvance/>
+      },
+      {
+        path: "/approve-salary-advance",
+        element: <ApproveSalaryAdvance/>
       }
     ]
   }
