@@ -47,7 +47,7 @@ const EditPersonalData = () => {
             }
         }
         getPersonalDetails()
-    },[])   
+    },[id])   
 
     // const handleButtonText = id ? "Update" : "Save";
     const handleFormChange = (event) => {

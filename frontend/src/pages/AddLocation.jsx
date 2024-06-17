@@ -35,7 +35,7 @@ const AddLocation = () => {
             }
         }
         getLocation()
-    },[id])
+    },[id, loc_id])
     console.log(location);
 
     const handleSubmit = async (event) =>{

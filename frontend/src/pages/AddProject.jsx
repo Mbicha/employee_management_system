@@ -64,7 +64,7 @@ const AddProject = () => {
             }
         }
         getProject()
-    },[])
+    },[id])
 
     const handleSubmit = async (event) => {
         event.preventDefault();

@@ -8,9 +8,12 @@ const Home = () => {
     });
     return (
         <main>
-            <section className="flex-col flex h-screen justify-center items-center p-5">
-                <article className="text-2xl">
-                    Welcome to Smart Employee Management System. Login to enjoy our services
+            <section 
+                className="flex-col flex h-screen justify-center items-center p-5"
+                style={{ backgroundImage: "url('/media/banner.avif')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+                >
+                <article className="text-2xl font-semibold">
+                    Welcome to SEMS. Your Ultimate Employee Management Solution
                 </article>
                 <div className="mt-2">
                     <button type="button" className="p-2 w-20 bg-green-800 rounded-lg m-1 text-white"><Link to='/account'>Register</Link></button>

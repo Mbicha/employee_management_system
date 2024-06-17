@@ -37,7 +37,7 @@ const AddSalary = () => {
             }
         }
         getSalary()
-    },[])
+    },[id])
 
     useEffect(() => {
         const getEmployees = async () => {

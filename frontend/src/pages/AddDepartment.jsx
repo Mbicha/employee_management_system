@@ -69,7 +69,7 @@ const AddDepartment = () => {
             }
         }
         getDepartment()
-    },[])
+    },[id])
 
     const handleHeadText = id ? "Edit Department" : "Add Department";
     const handleButtonText = id ? "Update" : "Save";

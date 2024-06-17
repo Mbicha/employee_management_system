@@ -89,7 +89,7 @@ const AddTask = () => {
             }
         }
         getTask()
-    }, [])
+    }, [id])
 
     const handleDelete = async () => {
         try {

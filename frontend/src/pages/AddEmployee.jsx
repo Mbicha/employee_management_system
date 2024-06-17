@@ -51,7 +51,7 @@ const AddEmployee = () => {
             }
         }
         getEmployee()
-    },[])
+    },[id])
 
     useEffect(() => {
         const getUsers = async () => {

@@ -24,7 +24,7 @@ const DepartmentData = () => {
             }
         }
         getEmployee()
-    }, [])
+    }, [user_id])
 
     useEffect(() => {
         const getDeparmentData = async () => {
@@ -36,7 +36,7 @@ const DepartmentData = () => {
             }
         }
         getDeparmentData()
-    }, [])
+    }, [id])
 
     const checkRole = () => {
         if (employeeData[0].role === "Admin" || employeeData[0].role === "Admin") {
